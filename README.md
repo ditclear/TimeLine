@@ -3,7 +3,7 @@ android时光轴(ExpandableListView)，包含child的滑动效果
 
 ----------
 
-[App Demo ](http://dp.wdjcdn.com/files/phoenix/4.52.1.8061/wandoujia-wandoujia_organic_binded.apk?remove=2&append=%93%00eyJhcHBEb3dubG9hZCI6eyJkb3dubG9hZFR5cGUiOiJkb3dubG9hZF9ieV9wYWNrYWdlX25hbWUiLCJwYWNrYWdlTmFtZSI6InZpZW5hbi5hcHAuY2FyZGdhbGxlcnkifX0Wdj01B0000837625 "app")
+[App Demo ](http://www.wandoujia.com/apps/vienan.app.cardgallery/binding "app")
 
 [相应的blog](http://vienan.github.io/blog/expandable_swipe_listview/ "blog")
 
