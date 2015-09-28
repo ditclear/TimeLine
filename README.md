@@ -7,6 +7,7 @@ android时光轴(ExpandableListView)，包含child的滑动效果
 
 [相应的blog](http://vienan.github.io/blog/expandable_swipe_listview/ "blog")
 
+[包含此项目的完整App](http://www.wandoujia.com/apps/vienan.app.cardgallery "完整App")
 >效果图
 
 ###普通时间轴
