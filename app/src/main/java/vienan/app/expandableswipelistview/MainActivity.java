@@ -5,10 +5,6 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.ExpandableListView;
 
-import com.orhanobut.logger.AndroidLogTool;
-import com.orhanobut.logger.LogLevel;
-import com.orhanobut.logger.Logger;
-
 import java.util.ArrayList;
 import java.util.List;
 
@@ -26,12 +22,6 @@ public class MainActivity extends Activity {
         setContentView(R.layout.activity_main);
         initView();
 
-        initLogger();
-    }
-
-    private void initLogger() {
-
-        Logger.init("TL")               ;  // default PRETTYLOGGER or use just init()
     }
 
     private void initView() {
