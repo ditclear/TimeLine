@@ -1,62 +1,72 @@
-<com.daimajia.swipe.SwipeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:id="@+id/sample"
+<android.support.v7.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:card_view="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    app:clickToClose="true"
-    android:layout_marginLeft="15dp">
+    card_view:cardBackgroundColor="#303069"
+    card_view:cardCornerRadius="3dp"
+    card_view:cardPreventCornerOverlap="true"
+    card_view:cardUseCompatPadding="true">
 
-    <LinearLayout
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:tag="Bottom2">
-
-        <ImageView
-            android:id="@+id/star"
-            android:layout_width="70dp"
-            android:layout_height="60dp"
-            android:background="#4cd964"
-            android:paddingLeft="22dp"
-            android:paddingRight="22dp"
-            android:src="@mipmap/star" />
-
-        <ImageView
-            android:id="@+id/trash"
-            android:layout_width="70dp"
-            android:layout_height="60dp"
-            android:background="#FF6347"
-            android:paddingLeft="25dp"
-            android:paddingRight="25dp"
-            android:src="@mipmap/trash" />
-    </LinearLayout>
-
-    <LinearLayout
-        android:id="@+id/item_surface"
+    <com.daimajia.swipe.SwipeLayout xmlns:app="http://schemas.android.com/apk/res-auto"
+        android:id="@+id/sample"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:gravity="center_vertical"
-        android:orientation="horizontal">
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="15dp"
+        app:clickToClose="true">
 
-        <ImageView
-            android:id="@+id/iv_type"
-            android:layout_width="40dp"
-            android:layout_height="40dp"
-            android:layout_marginBottom="6dp"
-            android:layout_marginLeft="30dp"
-            android:layout_marginRight="6dp"
-            android:layout_marginTop="6dp"
-            android:background="@drawable/type_edit"
-            android:scaleType="centerInside"
-            android:src="@mipmap/edit" />
-
-        <TextView
-            android:id="@+id/tv_title"
-            android:layout_width="0dp"
+        <LinearLayout
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:ellipsize="end"
-            android:singleLine="true"
-            android:textColor="#999999" />
-    </LinearLayout>
-</com.daimajia.swipe.SwipeLayout>
+            android:orientation="horizontal"
+            android:tag="Bottom2">
+
+            <ImageView
+                android:id="@+id/star"
+                android:layout_width="70dp"
+                android:layout_height="60dp"
+                android:background="#4cd964"
+                android:paddingLeft="22dp"
+                android:paddingRight="22dp"
+                android:src="@mipmap/star" />
+
+            <ImageView
+                android:id="@+id/trash"
+                android:layout_width="70dp"
+                android:layout_height="60dp"
+                android:background="@drawable/bg_item_trash"
+                android:paddingLeft="25dp"
+                android:paddingRight="25dp"
+                android:src="@mipmap/trash" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/item_surface"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginLeft="15dp"
+            android:gravity="center_vertical"
+            android:orientation="horizontal">
+
+            <ImageView
+                android:id="@+id/iv_type"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:layout_marginBottom="6dp"
+                android:layout_marginLeft="30dp"
+                android:layout_marginRight="6dp"
+                android:layout_marginTop="6dp"
+                android:background="@drawable/type_edit"
+                android:scaleType="centerInside"
+                android:src="@mipmap/edit" />
+
+            <TextView
+                android:id="@+id/tv_title"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:ellipsize="end"
+                android:singleLine="true"
+                android:textColor="#999999" />
+        </LinearLayout>
+    </com.daimajia.swipe.SwipeLayout>
+</android.support.v7.widget.CardView>
