@@ -146,17 +146,20 @@ public class MyAdapter extends BaseExpandableListAdapter {
                     //do something
                 }
             });
+            final ChildViewHolder finalViewHolder = viewHolder;
             convertView.findViewById(R.id.item_surface).setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    toast(entity.getChildTitle());
                     //do something
+                    finalViewHolder.swipeLayout.open(true);
+
+
                 }
             });
             viewHolder.swipeLayout.addSwipeListener(new SwipeLayout.SwipeListener() {
                 @Override
                 public void onStartOpen(SwipeLayout layout) {
-                    if (currentExpandedSwipeLayout != null)
+                    if (currentExpandedSwipeLayout != null&&currentExpandedSwipeLayout!=layout)
                         currentExpandedSwipeLayout.close(true);
 
                 }
