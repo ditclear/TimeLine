@@ -9,7 +9,9 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.daimajia.swipe.SwipeLayout;
+import com.ditclear.swipelayout.SwipeDragLayout;
+
+import java.util.ArrayList;
 import java.util.List;
 
 import vienan.app.expandableswipelistview.model.ChildEntity;
@@ -22,7 +24,8 @@ public class MyAdapter extends BaseExpandableListAdapter {
     private LayoutInflater inflater = null;
     private List<GroupEntity> groupList;
     private Context context;
-    SwipeLayout currentExpandedSwipeLayout;
+
+    List<SwipeDragLayout> mLayouts = new ArrayList<>();
 
     /**
      * 构造方法
@@ -115,7 +118,7 @@ public class MyAdapter extends BaseExpandableListAdapter {
     public View getChildView(final int groupPosition, final int childPosition,
                              boolean isLastChild, View convertView, ViewGroup parent) {
         ChildViewHolder viewHolder = null;
-        final ChildEntity entity = getChild(groupPosition,
+        ChildEntity entity = getChild(groupPosition,
                 childPosition);
         if (convertView != null) {
             viewHolder = (ChildViewHolder) convertView.getTag();
@@ -123,76 +126,66 @@ public class MyAdapter extends BaseExpandableListAdapter {
             viewHolder = new ChildViewHolder();
             convertView = inflater.inflate(R.layout.child_status_item, null);
             viewHolder.childTitle = (TextView) convertView.findViewById(R.id.tv_title);
-            viewHolder.swipeLayout = (SwipeLayout) convertView.findViewById(R.id.sample);
-            viewHolder.swipeLayout.setShowMode(SwipeLayout.ShowMode.PullOut);
-            viewHolder.swipeLayout.addDrag(SwipeLayout.DragEdge.Right, viewHolder.swipeLayout.findViewWithTag("Bottom2"));
+            viewHolder.swipeLayout = (SwipeDragLayout) convertView.findViewById(R.id.sample);
             viewHolder.iv_star = (ImageView) convertView.findViewById(R.id.star);
             viewHolder.iv_trash = (ImageView) convertView.findViewById(R.id.trash);
             convertView.setTag(viewHolder);
         }
         if (entity != null) {
-            viewHolder.childTitle.setText(entity.getChildTitle());
-            viewHolder.iv_star.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    toast("click star");
-                    //do something
-                }
-            });
-            viewHolder.iv_trash.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    toast("click trash");
-                    //do something
-                }
-            });
-            final ChildViewHolder finalViewHolder = viewHolder;
-            convertView.findViewById(R.id.item_surface).setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    //do something
-                    finalViewHolder.swipeLayout.open(true);
-
-
-                }
-            });
-            viewHolder.swipeLayout.addSwipeListener(new SwipeLayout.SwipeListener() {
-                @Override
-                public void onStartOpen(SwipeLayout layout) {
-                    if (currentExpandedSwipeLayout != null&&currentExpandedSwipeLayout!=layout)
-                        currentExpandedSwipeLayout.close(true);
-
-                }
-
-                @Override
-                public void onOpen(SwipeLayout layout) {
-                    currentExpandedSwipeLayout = layout;
-
-
-                }
-
-                @Override
-                public void onStartClose(SwipeLayout layout) {
-
-                }
-
-                @Override
-                public void onClose(SwipeLayout layout) {
-                }
-
-                @Override
-                public void onUpdate(SwipeLayout layout, int leftOffset, int topOffset) {
-
-                }
-
-                @Override
-                public void onHandRelease(SwipeLayout layout, float xvel, float yvel) {
-
-                }
-            });
-
+            render(viewHolder, entity);
         }
+
         return convertView;
+    }
+
+    private void render(final ChildViewHolder viewHolder, final ChildEntity entity) {
+        viewHolder.swipeLayout.addListener(new SwipeDragLayout.SwipeListener() {
+            @Override
+            public void onStartOpen(SwipeDragLayout layout) {
+
+            }
+
+            @Override
+            public void onStartClose(SwipeDragLayout layout) {
+            }
+
+            @Override
+            public void onUpdate(SwipeDragLayout layout, float offset) {
+
+            }
+
+            @Override
+            public void onOpened(SwipeDragLayout layout) {
+                toast("onOpened");
+            }
+
+            @Override
+            public void onClosed(SwipeDragLayout layout) {
+                toast("onClosed");
+            }
+        });
+
+        viewHolder.childTitle.setText(entity.getChildTitle());
+        viewHolder.childTitle.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                toast(entity.getChildTitle());
+            }
+        });
+        viewHolder.iv_star.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                toast("click star");
+                //do something
+            }
+        });
+        viewHolder.iv_trash.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                    toast("click trash");
+                //do something
+            }
+        });
     }
 
 
@@ -207,9 +200,10 @@ public class MyAdapter extends BaseExpandableListAdapter {
     }
 
     static class ChildViewHolder {
-        public SwipeLayout swipeLayout;
+        public SwipeDragLayout swipeLayout;
         public ImageView iv_star, iv_trash;
         public TextView childTitle;
+
     }
 
     private void toast(String msg) {

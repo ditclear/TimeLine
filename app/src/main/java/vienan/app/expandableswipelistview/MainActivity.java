@@ -15,7 +15,6 @@ public class MainActivity extends Activity {
     private ExpandableListView expandableListView;
     private List<GroupEntity> lists;
     private MyAdapter adapter;
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
