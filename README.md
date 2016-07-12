@@ -1,6 +1,10 @@
 # TimeLine
 android时光轴(ExpandableListView)，包含child的滑动效果
 
+同时，在这里也推荐我的另一个库[MVPTimeLine](https://github.com/vienan/MVPTimeLine)
+
+>使用listView做的android 时间轴，项目使用了MVP架构，想要了解MVP的朋友也可以star和fork下,代码少很容易学习,包含了下拉刷新操作
+
 ----------
 
 [App Demo](https://github.com/vienan/TimeLine/blob/master/apk/timeline.apk)
