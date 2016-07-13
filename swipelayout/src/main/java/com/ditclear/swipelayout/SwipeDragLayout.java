@@ -58,10 +58,9 @@ public class SwipeDragLayout extends FrameLayout {
             public void onViewReleased(View releasedChild, float xvel, float yvel) {
                 Log.d("releasedChild", "xvel:" + xvel + " yvel:" + yvel);
                 if (releasedChild == contentView) {
-                    if (xvel <= 0) {
+                    if (xvel < 0) {
                         open();
-                    } else if (xvel > 0) {
-
+                    } else if (xvel >= 0) {
                         close();
                     }
 

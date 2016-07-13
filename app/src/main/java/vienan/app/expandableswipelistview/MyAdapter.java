@@ -156,12 +156,11 @@ public class MyAdapter extends BaseExpandableListAdapter {
 
             @Override
             public void onOpened(SwipeDragLayout layout) {
-                toast("onOpened");
             }
 
             @Override
             public void onClosed(SwipeDragLayout layout) {
-                toast("onClosed");
+
             }
         });
 
