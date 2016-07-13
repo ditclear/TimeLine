@@ -166,12 +166,7 @@ public class MyAdapter extends BaseExpandableListAdapter {
         });
 
         viewHolder.childTitle.setText(entity.getChildTitle());
-        viewHolder.childTitle.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                toast(entity.getChildTitle());
-            }
-        });
+
         viewHolder.iv_star.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {

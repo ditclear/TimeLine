@@ -10,6 +10,7 @@
     <com.ditclear.swipelayout.SwipeDragLayout
         android:id="@+id/sample"
         android:layout_width="match_parent"
+        android:clickable="true"
         android:layout_height="60dp"
         android:layout_marginLeft="15dp">
 

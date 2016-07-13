@@ -24,6 +24,7 @@ public class SwipeDragLayout extends FrameLayout {
 
     private boolean isOpen;
     private float offset;
+    private float needOffset = 0.1f;
 
     private SwipeListener mListener;
 
@@ -57,14 +58,13 @@ public class SwipeDragLayout extends FrameLayout {
             public void onViewReleased(View releasedChild, float xvel, float yvel) {
                 Log.d("releasedChild", "xvel:" + xvel + " yvel:" + yvel);
                 if (releasedChild == contentView) {
-                    if (xvel < 0) {
+                    if (xvel <= 0) {
                         open();
                     } else if (xvel > 0) {
 
                         close();
-                    } else {
-                        toggle();
                     }
+
 
                     invalidate();
                 }
@@ -136,16 +136,16 @@ public class SwipeDragLayout extends FrameLayout {
         invalidate();
     }
 
-    public void open() {
-        mDragHelper.settleCapturedViewAt(originPos.x - menuView.getWidth(), originPos.y);
-
-    }
-
     private void toggle() {
         if (isOpen())
             close();
         else
             open();
+    }
+
+    private void open() {
+        mDragHelper.settleCapturedViewAt(originPos.x - menuView.getWidth(), originPos.y);
+
     }
 
     public void smoothOpen(View v) {
@@ -156,13 +156,18 @@ public class SwipeDragLayout extends FrameLayout {
         mDragHelper.smoothSlideViewTo(v, originPos.x, originPos.y);
     }
 
-    public void close() {
+    private void close() {
         mDragHelper.settleCapturedViewAt(originPos.x, originPos.y);
     }
 
+
     @Override
-    public boolean onInterceptHoverEvent(MotionEvent event) {
-        return mDragHelper.shouldInterceptTouchEvent(event);
+    public boolean onInterceptTouchEvent(MotionEvent ev) {
+        if (isOpen()) {
+            return mDragHelper.shouldInterceptTouchEvent(ev);
+        } else {
+            return true;
+        }
     }
 
     @Override
@@ -170,6 +175,7 @@ public class SwipeDragLayout extends FrameLayout {
         mDragHelper.processTouchEvent(event);
         return true;
     }
+
 
     @Override
     protected void onLayout(boolean changed, int left, int top, int right, int bottom) {
@@ -195,14 +201,12 @@ public class SwipeDragLayout extends FrameLayout {
         FrameLayout.LayoutParams params = new LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
         params.gravity = Gravity.RIGHT;
         menuView.setLayoutParams(params);
-        contentView.setOnClickListener(new OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                toggle(v);
-            }
-        });
     }
 
+    @Override
+    public void setOnTouchListener(OnTouchListener l) {
+        super.setOnTouchListener(l);
+    }
 
     public void addListener(SwipeListener listener) {
         mListener = listener;
