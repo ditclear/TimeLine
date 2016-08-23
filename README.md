@@ -9,11 +9,11 @@ android时光轴(ExpandableListView)，包含child的滑动效果
 
 ###自定义属性
 
-| attr        | type          | default |
-| ------------- |:-------------:| -----:|
-| need_offset    | float | 0.2f |  
-| click_to_open     | boolean      |   false |
-| click_to_close| boolean      |    false |
+| attr        | type          | default | |
+| ------------- |:-------------:| -----:|:-------------:|
+| need_offset    | float | 0.2f |  最小需要滑动的距离|
+| click_to_open     | boolean      |   false | 点击展开|
+| click_to_close| boolean      |    false |点击关闭|
 
 > 因为很少有`ExpandableListview`的`child`滑动的例子加上做app时的需要，也就有了这个库，简单来说就是将`child`的布局换为[SwipeDragLayout](https://github.com/vienan/TimeLine/blob/master/swipelayout/src/main/java/com/ditclear/swipelayout/SwipeDragLayout.java)，然后在`adpter`中设置`click`事件。主要的代码在上边。
 > 
