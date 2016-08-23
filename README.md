@@ -9,7 +9,7 @@ android时光轴(ExpandableListView)，包含child的滑动效果
 
 ###自定义属性
 
-| attr        | type          | default | |
+| attr        | type          | default | meaning |
 | ------------- |:-------------:| -----:|:-------------:|
 | need_offset    | float | 0.2f |  最小需要滑动的距离|
 | click_to_open     | boolean      |   false | 点击展开|
