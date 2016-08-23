@@ -6,6 +6,8 @@ package vienan.app.expandableswipelistview.model;
 public class ChildEntity {
     private String childTitle;
 
+    public boolean isOpen;
+
     public ChildEntity(String childTitle) {
         this.childTitle = childTitle;
     }

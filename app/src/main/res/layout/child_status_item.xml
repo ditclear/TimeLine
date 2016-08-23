@@ -1,4 +1,6 @@
-<android.support.v7.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+<android.support.v7.widget.CardView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:card_view="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
@@ -10,9 +12,11 @@
     <com.ditclear.swipelayout.SwipeDragLayout
         android:id="@+id/sample"
         android:layout_width="match_parent"
-        android:clickable="true"
         android:layout_height="60dp"
-        android:layout_marginLeft="15dp">
+        android:layout_marginLeft="15dp"
+        android:clickable="true"
+        app:click_to_close="true"
+        app:click_to_open="false">
 
         <LinearLayout
             android:layout_width="wrap_content"
@@ -27,7 +31,7 @@
                 android:background="#4cd964"
                 android:paddingLeft="22dp"
                 android:paddingRight="22dp"
-                android:src="@mipmap/star" />
+                android:src="@mipmap/star"/>
 
             <ImageView
                 android:id="@+id/trash"
@@ -36,15 +40,15 @@
                 android:background="@drawable/bg_item_trash"
                 android:paddingLeft="25dp"
                 android:paddingRight="25dp"
-                android:src="@mipmap/trash" />
+                android:src="@mipmap/trash"/>
         </LinearLayout>
 
         <LinearLayout
             android:id="@+id/item_surface"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:gravity="center_vertical"
             android:background="#ffffff"
+            android:gravity="center_vertical"
             android:orientation="horizontal">
 
             <ImageView
@@ -57,7 +61,7 @@
                 android:layout_marginTop="6dp"
                 android:background="@drawable/type_edit"
                 android:scaleType="centerInside"
-                android:src="@mipmap/edit" />
+                android:src="@mipmap/edit"/>
 
             <TextView
                 android:id="@+id/tv_title"
@@ -66,7 +70,7 @@
                 android:layout_weight="1"
                 android:ellipsize="end"
                 android:singleLine="true"
-                android:textColor="#999999" />
+                android:textColor="#999999"/>
         </LinearLayout>
     </com.ditclear.swipelayout.SwipeDragLayout>
 </android.support.v7.widget.CardView>

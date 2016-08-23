@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.ExpandableListView;
+import android.widget.Toast;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -41,16 +42,27 @@ public class MainActivity extends Activity {
                 return true;
             }
         });
+
+        adapter.setOnSwipeChildClickListener(new MyAdapter.OnSwipeChildClickListener() {
+            @Override
+            public boolean onChildClick(ExpandableListView parent, View v, int groupPosition, int childPosition, long id) {
+                toast(childTimeArray[groupPosition][childPosition]);
+
+                return true;
+            }
+        });
     }
+    //测试数据 8.23 one year
+    String[] groupArray = new String[]{"9月1日", "9月2日", "9月3日"};
+    String[][] childTimeArray = new String[][]{
+            {"测试数据1", "测试数据2", "测试数据3"},
+            {"测试数据4"}, {"测试数据5", "测试数据6","测试数据7", "测试数据8","测试数据9",
+            "测试数据10","测试数据11", "测试数据12"}};
 
     private List<GroupEntity> initList() {
 
         List<GroupEntity> groupList;
-        //测试数据
-        String[] groupArray = new String[]{"9月1日", "9月2日", "9月3日"};
-        String[][] childTimeArray = new String[][]{
-                {"测试数据1", "测试数据2", "测试数据3"},
-                {"测试数据4"}, {"测试数据5", "测试数据6"}};
+
         groupList = new ArrayList<GroupEntity>();
         for (int i = 0; i < groupArray.length; i++) {
             GroupEntity groupEntity = new GroupEntity(groupArray[i]);
@@ -63,5 +75,10 @@ public class MainActivity extends Activity {
             groupList.add(groupEntity);
         }
         return groupList;
+    }
+
+    private void toast(String msg) {
+        Toast.makeText(this, msg, Toast.LENGTH_SHORT).show();
+
     }
 }

@@ -1,6 +1,7 @@
 package com.ditclear.swipelayout;
 
 import android.content.Context;
+import android.content.res.TypedArray;
 import android.graphics.Point;
 import android.support.v4.widget.ViewDragHelper;
 import android.util.AttributeSet;
@@ -8,6 +9,7 @@ import android.util.Log;
 import android.view.Gravity;
 import android.view.MotionEvent;
 import android.view.View;
+import android.view.ViewConfiguration;
 import android.view.ViewGroup;
 import android.widget.FrameLayout;
 
@@ -22,9 +24,10 @@ public class SwipeDragLayout extends FrameLayout {
     private ViewDragHelper mDragHelper;
     private Point originPos = new Point();
 
-    private boolean isOpen;
+    private boolean isOpen,clickToOpen,clickToClose;
     private float offset;
     private float needOffset = 0.1f;
+    private int touchFlop;
 
     private SwipeListener mListener;
 
@@ -38,7 +41,16 @@ public class SwipeDragLayout extends FrameLayout {
 
     public SwipeDragLayout(Context context, AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
+
+
+        TypedArray array=context.obtainStyledAttributes(attrs,R.styleable.SwipeDragLayout);
+        needOffset=array.getFloat(R.styleable.SwipeDragLayout_need_offset,0.1f);
+        clickToOpen=array.getBoolean(R.styleable.SwipeDragLayout_click_to_open,false);
+        clickToClose=array.getBoolean(R.styleable.SwipeDragLayout_click_to_close,false);
+        touchFlop=ViewConfiguration.get(context).getScaledPagingTouchSlop();
+        Log.d("needOffset",""+needOffset);
         init();
+        array.recycle();
     }
 
     //初始化dragHelper，对拖动的view进行操作
@@ -58,12 +70,31 @@ public class SwipeDragLayout extends FrameLayout {
             public void onViewReleased(View releasedChild, float xvel, float yvel) {
                 Log.d("releasedChild", "xvel:" + xvel + " yvel:" + yvel);
                 if (releasedChild == contentView) {
-                    if (xvel < 0) {
-                        open();
-                    } else if (xvel >= 0) {
-                        close();
+                    if (isOpen()){
+                        if (offset!=1&&offset>(1-needOffset)){
+                            open();
+                            if (mListener!=null){
+                                mListener.onCancel(SwipeDragLayout.this);
+                            }
+                        }else if (offset==1&&!clickToClose){
+                            open();
+                        }else {
+                            close();
+                        }
+                    }else {
+                        if (offset!=0&&offset<needOffset){
+                            close();
+                            if (mListener!=null){
+                                mListener.onCancel(SwipeDragLayout.this);
+                            }
+                        }else if (offset==0&&!clickToOpen){
+                            if (mListener!=null){
+                                mListener.onClick(SwipeDragLayout.this);
+                            }
+                        }else {
+                            open();
+                        }
                     }
-
 
                     invalidate();
                 }
@@ -87,9 +118,9 @@ public class SwipeDragLayout extends FrameLayout {
             @Override
             public void onViewPositionChanged(View changedView, int left, int top, int dx, int dy) {
                 final int childWidth = menuView.getWidth();
-                offset = -(float) left / childWidth;
+                offset = -(float) (left-getPaddingLeft()) / childWidth;
                 //offset can callback here
-                Log.d("offset", "" + offset);
+                Log.d("offset", "" + offset+" dx"+dx);
                 dispatchSwipeEvent(offset);
                 Log.d("isOpen", "" + isOpen);
             }
@@ -111,52 +142,55 @@ public class SwipeDragLayout extends FrameLayout {
             mListener.onOpened(this);
         }
 
-        if (offset < 1 && offset > 0)
-            if (isOpen) {
-
+        if (offset < 1 && offset > touchFlop) {
+            if (isOpen && offset >= 1 - touchFlop) {
                 mListener.onStartClose(this);
-            } else {
+            } else if (!isOpen() && offset <= touchFlop) {
                 mListener.onStartOpen(this);
+            }else {
+                mListener.onUpdate(this, offset);
             }
-        mListener.onUpdate(this, offset);
+        }
 
+    }
+
+    public void setClickToClose(boolean clickToClose) {
+        this.clickToClose = clickToClose;
+    }
+
+    public void setClickToOpen(boolean clickToOpen) {
+        this.clickToOpen = clickToOpen;
     }
 
     public boolean isOpen() {
         return isOpen;
     }
 
-    public void toggle(View v) {
-        if (isOpen)
-            smoothClose(v);
-        else
-            smoothOpen(v);
-
-        invalidate();
-    }
-
-    private void toggle() {
-        if (isOpen())
-            close();
-        else
-            open();
-    }
-
-    private void open() {
+    public void open() {
         mDragHelper.settleCapturedViewAt(originPos.x - menuView.getWidth(), originPos.y);
-
+        isOpen=true;
     }
 
-    public void smoothOpen(View v) {
-        mDragHelper.smoothSlideViewTo(v, originPos.x - menuView.getWidth(), originPos.y);
+
+    public void smoothOpen(boolean smooth) {
+        if (smooth) {
+            mDragHelper.smoothSlideViewTo(contentView, originPos.x - menuView.getWidth(), originPos.y);
+        }else {
+            contentView.layout(originPos.x - menuView.getWidth(),originPos.y, menuView.getLeft(),menuView.getBottom());
+        }
     }
 
-    public void smoothClose(View v) {
-        mDragHelper.smoothSlideViewTo(v, originPos.x, originPos.y);
+    public void smoothClose(boolean smooth) {
+        if (smooth){
+            mDragHelper.smoothSlideViewTo(contentView, originPos.x, originPos.y);
+        }else {
+            contentView.layout(originPos.x, originPos.y, menuView.getRight(), menuView.getBottom());
+        }
     }
 
-    private void close() {
+    public void close() {
         mDragHelper.settleCapturedViewAt(originPos.x, originPos.y);
+        isOpen=false;
     }
 
 
@@ -192,6 +226,8 @@ public class SwipeDragLayout extends FrameLayout {
         }
     }
 
+
+
     @Override
     protected void onFinishInflate() {
         super.onFinishInflate();
@@ -222,5 +258,11 @@ public class SwipeDragLayout extends FrameLayout {
         void onOpened(SwipeDragLayout layout);
 
         void onClosed(SwipeDragLayout layout);
+
+        void onCancel(SwipeDragLayout layout);
+
+        void onClick(SwipeDragLayout layout);
     }
+
+
 }

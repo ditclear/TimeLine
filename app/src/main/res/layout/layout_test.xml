@@ -1,11 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <com.ditclear.swipelayout.SwipeDragLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="60dp"
-    android:orientation="vertical"
     android:paddingLeft="20dp"
-    android:paddingRight="20dp">
+    android:paddingRight="10dp"
+    android:layout_gravity="center"
+    app:need_offset="0.2">
 
     <LinearLayout
         android:layout_width="wrap_content"
@@ -36,8 +38,8 @@
         android:id="@+id/item_surface"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:gravity="center_vertical"
         android:background="#ffffff"
+        android:gravity="center_vertical"
         android:orientation="horizontal">
 
         <ImageView
