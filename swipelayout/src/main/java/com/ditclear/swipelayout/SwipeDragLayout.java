@@ -24,9 +24,9 @@ public class SwipeDragLayout extends FrameLayout {
     private ViewDragHelper mDragHelper;
     private Point originPos = new Point();
 
-    private boolean isOpen,clickToOpen,clickToClose;
+    private boolean isOpen, clickToOpen, clickToClose;
     private float offset;
-    private float needOffset = 0.1f;
+    private float needOffset = 0.2f;
     private int touchFlop;
 
     private SwipeListener mListener;
@@ -43,12 +43,12 @@ public class SwipeDragLayout extends FrameLayout {
         super(context, attrs, defStyleAttr);
 
 
-        TypedArray array=context.obtainStyledAttributes(attrs,R.styleable.SwipeDragLayout);
-        needOffset=array.getFloat(R.styleable.SwipeDragLayout_need_offset,0.1f);
-        clickToOpen=array.getBoolean(R.styleable.SwipeDragLayout_click_to_open,false);
-        clickToClose=array.getBoolean(R.styleable.SwipeDragLayout_click_to_close,false);
-        touchFlop=ViewConfiguration.get(context).getScaledPagingTouchSlop();
-        Log.d("needOffset",""+needOffset);
+        TypedArray array = context.obtainStyledAttributes(attrs, R.styleable.SwipeDragLayout);
+        needOffset = array.getFloat(R.styleable.SwipeDragLayout_need_offset, 0.2f);
+        clickToOpen = array.getBoolean(R.styleable.SwipeDragLayout_click_to_open, false);
+        clickToClose = array.getBoolean(R.styleable.SwipeDragLayout_click_to_close, false);
+        touchFlop = ViewConfiguration.get(context).getScaledPagingTouchSlop();
+        Log.d("needOffset", "" + needOffset);
         init();
         array.recycle();
     }
@@ -70,29 +70,46 @@ public class SwipeDragLayout extends FrameLayout {
             public void onViewReleased(View releasedChild, float xvel, float yvel) {
                 Log.d("releasedChild", "xvel:" + xvel + " yvel:" + yvel);
                 if (releasedChild == contentView) {
-                    if (isOpen()){
-                        if (offset!=1&&offset>(1-needOffset)){
+                    if (isOpen()) {
+                        if (offset != 1 && offset > (1 - needOffset)) {
                             open();
-                            if (mListener!=null){
+                            if (mListener != null) {
                                 mListener.onCancel(SwipeDragLayout.this);
                             }
-                        }else if (offset==1&&!clickToClose){
-                            open();
-                        }else {
+                        } else if (offset == 1) {
+                            if (clickToClose) {
+                                close();
+                                if (mListener != null) {
+                                    mListener.onClosed(SwipeDragLayout.this);
+                                }
+
+                            }
+                        } else {
                             close();
+                            Log.d("Released and isOpen", "" + isOpen);
+                            if (mListener != null) {
+                                mListener.onClosed(SwipeDragLayout.this);
+                            }
                         }
-                    }else {
-                        if (offset!=0&&offset<needOffset){
+                    } else {
+                        if (offset != 0 && offset < needOffset) {
                             close();
-                            if (mListener!=null){
+                            if (mListener != null) {
                                 mListener.onCancel(SwipeDragLayout.this);
                             }
-                        }else if (offset==0&&!clickToOpen){
-                            if (mListener!=null){
-                                mListener.onClick(SwipeDragLayout.this);
+                        } else if (offset == 0) {
+                            if (clickToOpen) {
+                                open();
+                                if (mListener != null) {
+                                    mListener.onOpened(SwipeDragLayout.this);
+                                }
                             }
-                        }else {
+                        } else {
                             open();
+                            Log.d("Released and isOpen", "" + isOpen);
+                            if (mListener != null) {
+                                mListener.onOpened(SwipeDragLayout.this);
+                            }
                         }
                     }
 
@@ -118,11 +135,11 @@ public class SwipeDragLayout extends FrameLayout {
             @Override
             public void onViewPositionChanged(View changedView, int left, int top, int dx, int dy) {
                 final int childWidth = menuView.getWidth();
-                offset = -(float) (left-getPaddingLeft()) / childWidth;
+                offset = -(float) (left - getPaddingLeft()) / childWidth;
                 //offset can callback here
-                Log.d("offset", "" + offset+" dx"+dx);
-                dispatchSwipeEvent(offset);
+                Log.d("offset", "" + offset + " dx" + dx);
                 Log.d("isOpen", "" + isOpen);
+                dispatchSwipeEvent(offset);
             }
 
 
@@ -132,23 +149,20 @@ public class SwipeDragLayout extends FrameLayout {
 
 
     private void dispatchSwipeEvent(float offset) {
-        if (mListener == null) return;
-
-        if (offset == 0) {
-            isOpen = false;
-            mListener.onClosed(this);
-        } else if (offset == 1) {
-            isOpen = true;
-            mListener.onOpened(this);
-        }
 
         if (offset < 1 && offset > touchFlop) {
             if (isOpen && offset >= 1 - touchFlop) {
-                mListener.onStartClose(this);
+                if (mListener != null) {
+                    mListener.onStartClose(this);
+                }
             } else if (!isOpen() && offset <= touchFlop) {
-                mListener.onStartOpen(this);
-            }else {
-                mListener.onUpdate(this, offset);
+                if (mListener != null) {
+                    mListener.onStartOpen(this);
+                }
+            } else {
+                if (mListener != null) {
+                    mListener.onUpdate(this, offset);
+                }
             }
         }
 
@@ -168,29 +182,29 @@ public class SwipeDragLayout extends FrameLayout {
 
     public void open() {
         mDragHelper.settleCapturedViewAt(originPos.x - menuView.getWidth(), originPos.y);
-        isOpen=true;
+        isOpen = true;
     }
 
 
     public void smoothOpen(boolean smooth) {
         if (smooth) {
             mDragHelper.smoothSlideViewTo(contentView, originPos.x - menuView.getWidth(), originPos.y);
-        }else {
-            contentView.layout(originPos.x - menuView.getWidth(),originPos.y, menuView.getLeft(),menuView.getBottom());
+        } else {
+            contentView.layout(originPos.x - menuView.getWidth(), originPos.y, menuView.getLeft(), menuView.getBottom());
         }
     }
 
     public void smoothClose(boolean smooth) {
-        if (smooth){
+        if (smooth) {
             mDragHelper.smoothSlideViewTo(contentView, originPos.x, originPos.y);
-        }else {
+        } else {
             contentView.layout(originPos.x, originPos.y, menuView.getRight(), menuView.getBottom());
         }
     }
 
     public void close() {
         mDragHelper.settleCapturedViewAt(originPos.x, originPos.y);
-        isOpen=false;
+        isOpen = false;
     }
 
 
@@ -225,7 +239,6 @@ public class SwipeDragLayout extends FrameLayout {
             invalidate();
         }
     }
-
 
 
     @Override

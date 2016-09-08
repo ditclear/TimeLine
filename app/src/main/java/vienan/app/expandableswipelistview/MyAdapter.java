@@ -233,7 +233,7 @@ public class MyAdapter extends BaseExpandableListAdapter {
 
     private void toast(String msg) {
         Toast.makeText(context, msg, Toast.LENGTH_SHORT).show();
-
+        Log.d("msg",msg);
     }
 
     private OnSwipeChildClickListener mOnSwipeChildClickListener;
