@@ -3,6 +3,7 @@ package com.ditclear.swipelayout;
 import android.content.Context;
 import android.content.res.TypedArray;
 import android.graphics.Point;
+import android.support.v4.view.ViewCompat;
 import android.support.v4.widget.ViewDragHelper;
 import android.util.AttributeSet;
 import android.util.Log;
@@ -59,9 +60,9 @@ public class SwipeDragLayout extends FrameLayout {
         mDragHelper = ViewDragHelper.create(this, 1.0f, new ViewDragHelper.Callback() {
 
 
+
             @Override
             public boolean tryCaptureView(View child, int pointerId) {
-
                 return child == contentView;
             }
 
@@ -83,6 +84,7 @@ public class SwipeDragLayout extends FrameLayout {
                                     mListener.onClosed(SwipeDragLayout.this);
                                 }
 
+
                             }
                         } else {
                             close();
@@ -103,12 +105,23 @@ public class SwipeDragLayout extends FrameLayout {
                                 if (mListener != null) {
                                     mListener.onOpened(SwipeDragLayout.this);
                                 }
+                                if (mISwipeLayout!=null){
+                                    mISwipeLayout.onMenuIsOpen(SwipeDragLayout.this);
+                                }
+
+                            }else{
+                                if (mListener != null) {
+                                    mListener.onClick(SwipeDragLayout.this);
+                                }
                             }
                         } else {
                             open();
                             Log.d("Released and isOpen", "" + isOpen);
                             if (mListener != null) {
                                 mListener.onOpened(SwipeDragLayout.this);
+                            }
+                            if (mISwipeLayout!=null){
+                                mISwipeLayout.onMenuIsOpen(SwipeDragLayout.this);
                             }
                         }
                     }
@@ -137,8 +150,6 @@ public class SwipeDragLayout extends FrameLayout {
                 final int childWidth = menuView.getWidth();
                 offset = -(float) (left - getPaddingLeft()) / childWidth;
                 //offset can callback here
-                Log.d("offset", "" + offset + " dx" + dx);
-                Log.d("isOpen", "" + isOpen);
                 dispatchSwipeEvent(offset);
             }
 
@@ -156,13 +167,19 @@ public class SwipeDragLayout extends FrameLayout {
                     mListener.onStartClose(this);
                 }
             } else if (!isOpen() && offset <= touchFlop) {
+
                 if (mListener != null) {
                     mListener.onStartOpen(this);
                 }
+
             } else {
                 if (mListener != null) {
                     mListener.onUpdate(this, offset);
                 }
+            }
+        }else if (offset<touchFlop){
+            if (mISwipeLayout!=null&&!isOpenStatus()) {
+                mISwipeLayout.onDownOrMove(SwipeDragLayout.this);
             }
         }
 
@@ -196,15 +213,35 @@ public class SwipeDragLayout extends FrameLayout {
 
     public void smoothClose(boolean smooth) {
         if (smooth) {
-            mDragHelper.smoothSlideViewTo(contentView, originPos.x, originPos.y);
+            mDragHelper.smoothSlideViewTo(contentView, getPaddingLeft(), getPaddingTop());
+            postInvalidate();
         } else {
             contentView.layout(originPos.x, originPos.y, menuView.getRight(), menuView.getBottom());
         }
+        isOpen=false;
+
+
     }
 
     public void close() {
         mDragHelper.settleCapturedViewAt(originPos.x, originPos.y);
         isOpen = false;
+    }
+
+    public boolean isOpenStatus() {
+        View surfaceView = contentView;
+        if (surfaceView == null) {
+            return false;
+        }
+        int surfaceLeft = surfaceView.getLeft();
+        int surfaceTop = surfaceView.getTop();
+        if (surfaceLeft == getPaddingLeft() && surfaceTop == getPaddingTop()) return false;
+        int mDragDistance=menuView.getWidth();
+        if (surfaceLeft == (getPaddingLeft() - mDragDistance) || surfaceLeft == (getPaddingLeft() + mDragDistance)
+                || surfaceTop == (getPaddingTop() - mDragDistance) || surfaceTop == (getPaddingTop() + mDragDistance))
+            return true;
+
+        return false;
     }
 
 
@@ -215,10 +252,12 @@ public class SwipeDragLayout extends FrameLayout {
         } else {
             return true;
         }
+
     }
 
     @Override
     public boolean onTouchEvent(MotionEvent event) {
+
         mDragHelper.processTouchEvent(event);
         return true;
     }
@@ -236,7 +275,7 @@ public class SwipeDragLayout extends FrameLayout {
     @Override
     public void computeScroll() {
         if (mDragHelper.continueSettling(true)) {
-            invalidate();
+            ViewCompat.postInvalidateOnAnimation(this);
         }
     }
 
@@ -275,6 +314,20 @@ public class SwipeDragLayout extends FrameLayout {
         void onCancel(SwipeDragLayout layout);
 
         void onClick(SwipeDragLayout layout);
+    }
+
+    private ISwipeLayout mISwipeLayout;
+
+    public void setISwipeLayout(ISwipeLayout ISwipeLayout) {
+        mISwipeLayout = ISwipeLayout;
+    }
+
+    public interface ISwipeLayout{
+
+
+        void onMenuIsOpen(View view);
+
+        void onDownOrMove(SwipeDragLayout swipeLayout);
     }
 
 

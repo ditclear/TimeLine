@@ -16,4 +16,23 @@ public class ChildEntity {
         return childTitle;
     }
 
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        ChildEntity that = (ChildEntity) o;
+
+        if (isOpen != that.isOpen) return false;
+        return childTitle.equals(that.childTitle);
+
+    }
+
+    @Override
+    public int hashCode() {
+        int result = childTitle.hashCode();
+        result = 31 * result + (isOpen ? 1 : 0);
+        return result;
+    }
 }
