@@ -3,7 +3,7 @@ android时光轴(RecycleView 多种type实现)，包含child的滑动效果`Swip
 
 ### Feature
 
-- SwipeDragLayout使用ViewDragHelper来进行滑动操作，代码少，易理解，核心代码不过150行
+- [SwipeDragLayout](https://github.com/vienan/TimeLine/blob/master/swipelayout/src/main/java/com/ditclear/swipelayout/SwipeDragLayout.java)使用ViewDragHelper来进行滑动操作，代码少，易理解，核心代码不过150行
 - 使用了保留一个静态类的方法解决复用问题，并在`onDetachedFromWindow`方法中进行关闭操作
 - 轻松实现IOS QQ消息列表的回弹效果(有多轻松:见SwipeDragLayout 第100行)
 - sample使用了DataBinding和RecyclerView 进行了多类型的绑定，对于了解和使用DataBinding大有益处，添加多种Type更是十分简单,再也不用extends RecyclerView.Adapter了
