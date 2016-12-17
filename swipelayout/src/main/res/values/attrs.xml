@@ -2,7 +2,7 @@
 <resources>
     <declare-styleable name="SwipeDragLayout">
         <attr name="need_offset" format="float"/>
-        <attr name="click_to_open" format="boolean"/>
+        <attr name="ios" format="boolean"/>
         <attr name="click_to_close" format="boolean"/>
     </declare-styleable>
 </resources>

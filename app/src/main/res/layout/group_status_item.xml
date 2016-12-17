@@ -1,35 +1,44 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:gravity="center_vertical">
+<layout xmlns:android="http://schemas.android.com/apk/res/android">
 
-    <ImageView
-        android:id="@+id/imageView1"
-        android:layout_width="20dp"
-        android:layout_height="20dp"
-        android:layout_gravity="center_vertical"
-        android:layout_marginRight="5dp"
-        android:background="@mipmap/icons_ok"
-        android:contentDescription="@string/app_name" />
+    <data>
+        <variable
+            name="item"
+            type="vienan.app.expandableswipelistview.model.LineItem"/>
+    </data>
 
     <LinearLayout
-        android:id="@+id/linearLayout1"
-        android:layout_width="fill_parent"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="10dp"
-        android:layout_marginBottom="10dp"
-        android:gravity="center_vertical"
-        android:orientation="vertical"
-        android:alpha="0.5">
+        android:gravity="center_vertical">
 
-        <TextView
-            android:id="@+id/one_status_name"
-            android:layout_width="wrap_content"
+        <ImageView
+            android:id="@+id/imageView1"
+            android:layout_width="20dp"
+            android:layout_height="20dp"
+            android:layout_gravity="center_vertical"
+            android:layout_marginRight="5dp"
+            android:background="@mipmap/icons_ok"
+            android:contentDescription="@string/app_name"/>
+
+        <LinearLayout
+            android:id="@+id/linearLayout1"
+            android:layout_width="fill_parent"
             android:layout_height="wrap_content"
-            android:text="@string/app_name"
-            android:textColor="#000000"
-            android:textSize="18sp" />
-    </LinearLayout>
+            android:layout_marginBottom="10dp"
+            android:layout_marginTop="10dp"
+            android:alpha="0.5"
+            android:gravity="center_vertical"
+            android:orientation="vertical">
 
-</LinearLayout>
+            <TextView
+                android:id="@+id/one_status_name"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@{item.content}"
+                android:textColor="#000000"
+                android:textSize="18sp"/>
+        </LinearLayout>
+
+    </LinearLayout>
+</layout>
