@@ -1,5 +1,5 @@
 # TimeLine
-android时光轴，包含child的滑动效果
+android时光轴(RecycleView 多种type实现)，包含child的滑动效果`SwipeDragLayout`,2.0版本sample项目使用了Databinding 来操作数据
 
 ### Feature
 
@@ -8,9 +8,11 @@ android时光轴，包含child的滑动效果
 - 轻松实现IOS QQ消息列表的回弹效果(有多轻松:见SwipeDragLayout 第100行)
 - sample使用了DataBinding和RecyclerView 进行了多类型的绑定，对于了解和使用DataBinding大有益处，添加多种Type更是十分简单,再也不用extends RecyclerView.Adapter了
 
-同时，在这里也推荐我的另一个库[MVPTimeLine](https://github.com/vienan/MVPTimeLine)
 
->使用listView做的android 时间轴，项目使用了MVP架构，想要了解MVP的朋友也可以star和fork下,代码少很容易学习,包含了下拉刷新操作
+
+[demo](https://github.com/vienan/TimeLine/tree/master/apk)
+
+
 
 ![](https://github.com/vienan/TimeLine/blob/master/screenshot/screenshot.gif)
 
@@ -54,6 +56,10 @@ android时光轴，包含child的滑动效果
         void onClick(SwipeDragLayout layout);
     }
 ```
+
+### Thanks To
+
+[DataBindingAdapter](https://github.com/markzhai/DataBindingAdapter)
 
 
 
