@@ -9,17 +9,28 @@
             type="android.support.v7.widget.RecyclerView.Adapter"/>
     </data>
 
-    <android.support.v7.widget.RecyclerView
-        android:id="@+id/recycler_view"
+    <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:clipToPadding="false"
-        android:fadeScrollbars="true"
-        android:background="@color/background_material_light"
-        android:paddingLeft="@dimen/activity_horizontal_margin"
-        android:paddingRight="@dimen/activity_horizontal_margin"
-        android:scrollbars="vertical"
-        app:adapter="@{adapter}"
-        app:layoutManager="LinearLayoutManager">
-    </android.support.v7.widget.RecyclerView>
+        android:layout_height="match_parent">
+        <View
+            android:id="@+id/view_help"
+            android:layout_width="1dp"
+            android:layout_height="fill_parent"
+            android:layout_marginLeft="26dp"
+            android:background="#b3b3b3"/>
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/recycler_view"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@android:color/background_light"
+            android:clipToPadding="false"
+            android:fadeScrollbars="true"
+            android:paddingLeft="@dimen/activity_horizontal_margin"
+            android:paddingRight="@dimen/activity_horizontal_margin"
+            android:scrollbars="vertical"
+            app:adapter="@{adapter}"
+            app:layoutManager="LinearLayoutManager">
+        </android.support.v7.widget.RecyclerView>
+
+    </RelativeLayout>
 </layout>

@@ -96,7 +96,7 @@ public class SwipeDragLayout extends FrameLayout {
 
             @Override
             public int clampViewPositionHorizontal(View child, int left, int dx) {
-                //滑动距离
+                //滑动距离,如果启动效果，则可滑动3/2倍菜单宽度的距离
                 final int leftBound = getPaddingLeft() - (ios ? menuView.getWidth() * 3 / 2 : menuView.getWidth());
                 final int rightBound = getWidth() - child.getWidth();
                 final int newLeft = Math.min(Math.max(left, leftBound), rightBound);
