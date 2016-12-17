@@ -9,12 +9,9 @@ android时光轴(RecycleView 多种type实现)，包含child的滑动效果`Swip
 - sample使用了DataBinding和RecyclerView 进行了多类型的绑定，对于了解和使用DataBinding大有益处，添加多种Type更是十分简单,再也不用extends RecyclerView.Adapter了
 
 
+![](https://github.com/vienan/TimeLine/blob/master/screenshot/screenshot.gif)
 
 [demo](https://github.com/vienan/TimeLine/tree/master/apk)
-
-
-
-![](https://github.com/vienan/TimeLine/blob/master/screenshot/screenshot.gif)
 
 ###自定义属性
 
