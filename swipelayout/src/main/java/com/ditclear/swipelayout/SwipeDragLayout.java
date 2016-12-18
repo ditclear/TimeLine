@@ -172,23 +172,7 @@ public class SwipeDragLayout extends FrameLayout {
             mListener.onClosed(SwipeDragLayout.this);
         }
     }
-
-    public boolean isOpenStatus() {
-        View surfaceView = contentView;
-        if (surfaceView == null) {
-            return false;
-        }
-        int surfaceLeft = surfaceView.getLeft();
-        int surfaceTop = surfaceView.getTop();
-        if (surfaceLeft == getPaddingLeft() && surfaceTop == getPaddingTop()) return false;
-        int mDragDistance = menuView.getWidth();
-        if (surfaceLeft == (getPaddingLeft() - mDragDistance) || surfaceLeft == (getPaddingLeft() + mDragDistance)
-                || surfaceTop == (getPaddingTop() - mDragDistance) || surfaceTop == (getPaddingTop() + mDragDistance))
-            return true;
-
-        return false;
-    }
-
+    
     @Override
     public boolean onInterceptTouchEvent(MotionEvent ev) {
         switch (ev.getAction()) {
