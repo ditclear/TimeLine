@@ -58,11 +58,3 @@ android时光轴(RecycleView 多种type实现)，包含child的滑动效果`Swip
 
 [DataBindingAdapter](https://github.com/markzhai/DataBindingAdapter)
 
-
-
-> Ps:
->
-> 
->
-> 效果可以下载app看一下,有用的话不妨`star`一下
-
