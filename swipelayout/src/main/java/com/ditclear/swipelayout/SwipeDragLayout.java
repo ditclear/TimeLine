@@ -17,6 +17,7 @@ import android.widget.FrameLayout;
  */
 public class SwipeDragLayout extends FrameLayout {
 
+    private final String TAG=getClass().getSimpleName();
     private static SwipeDragLayout mCacheView;
     private View contentView;
     private View menuView;
@@ -47,60 +48,58 @@ public class SwipeDragLayout extends FrameLayout {
         array.recycle();
     }
 
-    public static SwipeDragLayout getmCacheView() {
+    public static SwipeDragLayout getCacheView() {
         return mCacheView;
     }
 
     //初始化dragHelper，对拖动的view进行操作
     private void init() {
         mDragHelper = ViewDragHelper.create(this, 1.0f, new ViewDragHelper.Callback() {
-
-
             @Override
             public boolean tryCaptureView(View child, int pointerId) {
                 return child == contentView;
             }
-
-
             @Override
             public void onViewReleased(View releasedChild, float xvel, float yvel) {
-                if (releasedChild == contentView) {
-                    if (isOpen()) {
+                super.onViewReleased(releasedChild, xvel, yvel);
+                if (isOpen()) {
                         if (offset != 1 && offset > (1 - needOffset)) {
                             open();
                         } else if (offset == 1) {
                             if (clickToClose) {
                                 close();
+                                if (mListener != null) {
+                                    mListener.onClosed(SwipeDragLayout.this);
+                                }
                             }
                         } else {
                             close();
-
+                            if (mListener != null) {
+                                mListener.onClosed(SwipeDragLayout.this);
+                            }
                         }
-                    } else {
+                } else {
                         if (offset != 0 && offset < needOffset) {
                             close();
                         } else if (offset == 0) {
                             getParent().requestDisallowInterceptTouchEvent(false);
                         } else {
                             open();
-                            Log.d("Released and isOpen", "" + isOpen);
                             if (mListener != null) {
                                 mListener.onOpened(SwipeDragLayout.this);
                             }
                         }
                     }
-                    invalidate();
-                }
+
             }
 
 
             @Override
             public int clampViewPositionHorizontal(View child, int left, int dx) {
                 //滑动距离,如果启动效果，则可滑动3/2倍菜单宽度的距离
-                final int leftBound = getPaddingLeft() - (ios ? menuView.getWidth() * 3 / 2 : menuView.getWidth());
+                final int leftBound = getPaddingLeft() - (ios ? menuView.getWidth() * 4 / 3 : menuView.getWidth());
                 final int rightBound = getWidth() - child.getWidth();
-                final int newLeft = Math.min(Math.max(left, leftBound), rightBound);
-                return newLeft;
+                return Math.min(Math.max(left, leftBound), rightBound);
             }
 
             @Override
@@ -113,8 +112,11 @@ public class SwipeDragLayout extends FrameLayout {
                 final int childWidth = menuView.getWidth();
                 offset = -(float) (left - getPaddingLeft()) / childWidth;
                 //offset can callback here
+                Log.d("left", "onViewPositionChanged() called with: left = [" + left + "]");
+                menuView.setTranslationX(Math.max(-menuView.getWidth(),left));
+                Log.d(TAG, "onViewPositionChanged: "+mDragHelper.getMinVelocity());
                 if (mListener!=null){
-                    mListener.onUpdate(SwipeDragLayout.this,offset);
+                    mListener.onUpdate(SwipeDragLayout.this,offset,left);
                 }
             }
 
@@ -137,49 +139,25 @@ public class SwipeDragLayout extends FrameLayout {
 
     public void open() {
         mCacheView = SwipeDragLayout.this;
-        mDragHelper.settleCapturedViewAt(originPos.x - menuView.getWidth(), originPos.y);
+        mDragHelper.smoothSlideViewTo(contentView, originPos.x - menuView.getWidth(), originPos.y);
         isOpen = true;
+        invalidate();
     }
 
-    public void smoothOpen(boolean smooth) {
-        mCacheView = SwipeDragLayout.this;
-        if (smooth) {
-            mDragHelper.smoothSlideViewTo(contentView, originPos.x - menuView.getWidth(), originPos.y);
-        } else {
-            contentView.layout(originPos.x - menuView.getWidth(), originPos.y, menuView.getLeft(), menuView.getBottom());
-        }
-    }
-
-    private void smoothClose(boolean smooth) {
-        if (smooth) {
-            mDragHelper.smoothSlideViewTo(contentView, getPaddingLeft(), getPaddingTop());
-            postInvalidate();
-        } else {
-            contentView.layout(originPos.x, originPos.y, menuView.getRight(), menuView.getBottom());
-        }
+    private void close() {
+        mDragHelper.smoothSlideViewTo(contentView, originPos.x, originPos.y);
         isOpen = false;
         mCacheView = null;
-
+        invalidate();
     }
 
-
-
-    public void close() {
-        mDragHelper.settleCapturedViewAt(originPos.x, originPos.y);
-        isOpen = false;
-        mCacheView = null;
-        if (mListener != null) {
-            mListener.onClosed(SwipeDragLayout.this);
-        }
-    }
-    
     @Override
     public boolean onInterceptTouchEvent(MotionEvent ev) {
         switch (ev.getAction()) {
             case MotionEvent.ACTION_DOWN:
                 if (mCacheView != null) {
                     if (mCacheView != this) {
-                        mCacheView.smoothClose(true);
+                        mCacheView.close();
                     }
                     getParent().requestDisallowInterceptTouchEvent(true);
                 }
@@ -206,6 +184,10 @@ public class SwipeDragLayout extends FrameLayout {
 
         originPos.x = contentView.getLeft();
         originPos.y = contentView.getTop();
+
+        menuView.layout(contentView.getWidth(), menuView.getTop(),
+                contentView.getWidth() + menuView.getWidth(), menuView.getBottom());
+
     }
 
     @Override
@@ -218,33 +200,19 @@ public class SwipeDragLayout extends FrameLayout {
     @Override
     protected void onFinishInflate() {
         super.onFinishInflate();
-        contentView = getChildAt(1);
-        menuView = getChildAt(0);
-        FrameLayout.LayoutParams params = new LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
-        params.gravity = Gravity.RIGHT;
-        menuView.setLayoutParams(params);
-        //重写OnClickListener会导致关闭失效
-        if (contentView!=null){
-            contentView.setOnClickListener(new OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    if (clickToClose&&isOpen()){
-                        smoothClose(true);
-                        return;
-                    }
-                    if (mListener!=null){
-                        mListener.onClick(SwipeDragLayout.this);
-                    }
-
-                }
-            });
+        if (getChildCount()!=2){
+            throw new UnsupportedOperationException("子View暂只支持两个");
         }
+        contentView = getChildAt(0);
+        menuView = getChildAt(1);
+        FrameLayout.LayoutParams params = new LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+        params.gravity = Gravity.END;
+        menuView.setLayoutParams(params);
     }
 
     @Override
     protected void onDetachedFromWindow() {
         if (mCacheView == this) {
-            mCacheView.smoothClose(false);
             mCacheView = null;
         }
         super.onDetachedFromWindow();
@@ -252,10 +220,6 @@ public class SwipeDragLayout extends FrameLayout {
     }
 
 
-    @Override
-    public void setOnTouchListener(OnTouchListener l) {
-        super.setOnTouchListener(l);
-    }
 
     public void addListener(SwipeListener listener) {
         mListener = listener;
@@ -267,9 +231,10 @@ public class SwipeDragLayout extends FrameLayout {
         /**
          * 拖动中，可根据offset 进行其他动画
          * @param layout
-         * @param offset 偏移量
+         * @param offsetRatio  偏移相对于menu宽度的比例
+         * @param offset 偏移量px
          */
-        void onUpdate(SwipeDragLayout layout, float offset);
+        void onUpdate(SwipeDragLayout layout, float offsetRatio, float offset);
 
         /**
          * 展开完成
@@ -282,12 +247,6 @@ public class SwipeDragLayout extends FrameLayout {
          * @param layout
          */
         void onClosed(SwipeDragLayout layout);
-
-        /**
-         * 点击内容layout {@link #onFinishInflate()}
-         * @param layout
-         */
-        void onClick(SwipeDragLayout layout);
     }
 
 }

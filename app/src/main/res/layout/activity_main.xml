@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
-        xmlns:app="http://schemas.android.com/apk/res-auto">
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        xmlns:tools="http://schemas.android.com/tools">
 
     <data>
 
@@ -8,29 +9,13 @@
             name="adapter"
             type="android.support.v7.widget.RecyclerView.Adapter"/>
     </data>
-
-    <RelativeLayout
-        android:layout_width="match_parent"
-        android:layout_height="match_parent">
-        <View
-            android:id="@+id/view_help"
-            android:layout_width="1dp"
-            android:layout_height="fill_parent"
-            android:layout_marginLeft="26dp"
-            android:background="#b3b3b3"/>
         <android.support.v7.widget.RecyclerView
             android:id="@+id/recycler_view"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:background="@android:color/background_light"
-            android:clipToPadding="false"
-            android:fadeScrollbars="true"
-            android:paddingLeft="@dimen/activity_horizontal_margin"
-            android:paddingRight="@dimen/activity_horizontal_margin"
-            android:scrollbars="vertical"
             app:adapter="@{adapter}"
+            tools:listitem="@layout/child_status_item"
             app:layoutManager="LinearLayoutManager">
         </android.support.v7.widget.RecyclerView>
 
-    </RelativeLayout>
 </layout>

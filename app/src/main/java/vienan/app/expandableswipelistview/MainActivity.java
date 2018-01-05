@@ -2,12 +2,10 @@ package vienan.app.expandableswipelistview;
 
 import android.content.Context;
 import android.databinding.DataBindingUtil;
-import android.graphics.Rect;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.DividerItemDecoration;
 import android.util.Log;
-import android.view.View;
 import android.widget.Toast;
 
 import com.ditclear.swipelayout.SwipeDragLayout;
@@ -40,13 +38,7 @@ public class MainActivity extends AppCompatActivity {
         adapter.addViewTypeToLayoutMap(VIEW_TYPE_ITEM, R.layout.child_status_item);
         mMainBinding.setAdapter(adapter);
 
-        mMainBinding.recyclerView.addItemDecoration(new RecyclerView.ItemDecoration() {
-            @Override
-            public void getItemOffsets(Rect outRect, View view, RecyclerView parent, RecyclerView.State state) {
-                super.getItemOffsets(outRect, view, parent, state);
-                outRect.top=dip2px(mContext,10);
-            }
-        });
+        mMainBinding.recyclerView.addItemDecoration(new DividerItemDecoration(mContext, DividerItemDecoration.VERTICAL));
 
         adapter.addAll(fakeData(), new MultiTypeAdapter.CustomMultiViewTyper() {
 
@@ -126,29 +118,16 @@ public class MainActivity extends AppCompatActivity {
                 ChildStatusItemBinding binding= (ChildStatusItemBinding) holder.getBinding();
                 binding.swipLayout.addListener(new SwipeDragLayout.SwipeListener() {
                     @Override
-                    public void onUpdate(SwipeDragLayout layout, float offset) {
+                    public void onUpdate(SwipeDragLayout layout, float v, float offset) {
                         Log.d("offset", "onUpdate() called with offset = [" + offset + "]");
                     }
 
                     @Override
                     public void onOpened(SwipeDragLayout layout) {
-                        Toast.makeText(mContext, "onOpened", Toast.LENGTH_SHORT).show();
                     }
 
                     @Override
                     public void onClosed(SwipeDragLayout layout) {
-                        Toast.makeText(mContext, "onClosed", Toast.LENGTH_SHORT).show();
-
-                    }
-
-                    /**
-                     * 等同于setOnClickListener
-                     * 见Method {@link SwipeDragLayout#onFinishInflate()}
-                     * @param layout
-                     */
-                    @Override
-                    public void onClick(SwipeDragLayout layout) {
-                        Toast.makeText(mContext, fakeData().get(position).getContent(), Toast.LENGTH_SHORT).show();
 
                     }
                 });
