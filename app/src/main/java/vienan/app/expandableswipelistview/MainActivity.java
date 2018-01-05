@@ -105,6 +105,10 @@ public class MainActivity extends AppCompatActivity {
             Toast.makeText(mContext, "delete", Toast.LENGTH_SHORT).show();
         }
 
+        public void onContentClick(LineItem item){
+            Toast.makeText(mContext,item.getContent(),Toast.LENGTH_SHORT).show();
+        }
+
     }
 
     /**
