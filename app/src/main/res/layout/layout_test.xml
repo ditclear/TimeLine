@@ -1,69 +1,83 @@
 <?xml version="1.0" encoding="utf-8"?>
-<com.ditclear.swipelayout.SwipeDragLayout
-        xmlns:android="http://schemas.android.com/apk/res/android"
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
         xmlns:app="http://schemas.android.com/apk/res-auto"
-        android:layout_width="match_parent"
-        android:layout_height="60dp"
-        xmlns:tools="http://schemas.android.com/tools"
-        android:paddingLeft="20dp"
-        android:paddingRight="10dp"
-        android:layout_gravity="center"
-        app:need_offset="0.2">
+        xmlns:tools="http://schemas.android.com/tools">
 
-    <LinearLayout
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        tools:layout_gravity="end"
-        android:tag="Bottom2">
+    <data>
 
-        <ImageView
-            android:id="@+id/star"
-            android:layout_width="70dp"
+        <variable
+                name="item"
+                type="Object"/>
+
+        <variable
+                name="presenter"
+                type="Object"/>
+
+    </data>
+
+    <com.ditclear.swipelayout.SwipeDragLayout
+            android:layout_width="match_parent"
             android:layout_height="60dp"
-            android:background="#4cd964"
-            android:paddingLeft="22dp"
-            android:paddingRight="22dp"
-            android:src="@mipmap/star"/>
+            android:layout_gravity="center"
+            android:paddingLeft="20dp"
+            android:paddingRight="10dp"
+            app:need_offset="0.2">
 
-        <ImageView
-            android:id="@+id/trash"
-            android:layout_width="70dp"
-            android:layout_height="60dp"
-            android:background="@drawable/bg_item_trash"
-            android:paddingLeft="25dp"
-            android:paddingRight="25dp"
-            android:src="@mipmap/trash"/>
-    </LinearLayout>
+        <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:tag="Bottom2"
+                tools:layout_gravity="end">
 
-    <LinearLayout
-        android:id="@+id/item_surface"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:background="#ffffff"
-        android:gravity="center_vertical"
-        android:orientation="horizontal">
+            <ImageView
+                    android:id="@+id/star"
+                    android:layout_width="70dp"
+                    android:layout_height="60dp"
+                    android:background="#4cd964"
+                    android:paddingLeft="22dp"
+                    android:paddingRight="22dp"
+                    android:src="@mipmap/star"/>
 
-        <ImageView
-            android:id="@+id/iv_type"
-            android:layout_width="40dp"
-            android:layout_height="40dp"
-            android:layout_marginBottom="6dp"
-            android:layout_marginLeft="30dp"
-            android:layout_marginRight="6dp"
-            android:layout_marginTop="6dp"
-            android:background="@drawable/type_edit"
-            android:scaleType="centerInside"
-            android:src="@mipmap/edit"/>
+            <ImageView
+                    android:id="@+id/trash"
+                    android:layout_width="70dp"
+                    android:layout_height="60dp"
+                    android:background="@drawable/bg_item_trash"
+                    android:paddingLeft="25dp"
+                    android:paddingRight="25dp"
+                    android:src="@mipmap/trash"/>
+        </LinearLayout>
 
-        <TextView
-            android:id="@+id/tv_title"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:ellipsize="end"
-            android:singleLine="true"
-            android:textColor="#999999"/>
-    </LinearLayout>
+        <LinearLayout
+                android:id="@+id/item_surface"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="#ffffff"
+                android:gravity="center_vertical"
+                android:orientation="horizontal">
 
-</com.ditclear.swipelayout.SwipeDragLayout>
+            <ImageView
+                    android:id="@+id/iv_type"
+                    android:layout_width="40dp"
+                    android:layout_height="40dp"
+                    android:layout_marginBottom="6dp"
+                    android:layout_marginLeft="30dp"
+                    android:layout_marginRight="6dp"
+                    android:layout_marginTop="6dp"
+                    android:background="@drawable/type_edit"
+                    android:scaleType="centerInside"
+                    android:src="@mipmap/edit"/>
+
+            <TextView
+                    android:id="@+id/tv_title"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:ellipsize="end"
+                    android:singleLine="true"
+                    android:textColor="#999999"/>
+        </LinearLayout>
+
+    </com.ditclear.swipelayout.SwipeDragLayout>
+</layout>

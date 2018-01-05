@@ -1,6 +1,7 @@
 package vienan.app.expandableswipelistview;
 
 import android.databinding.DataBindingUtil;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -10,6 +11,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -34,6 +36,7 @@ public class DemoListActivity extends AppCompatActivity {
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         mBinding = DataBindingUtil.setContentView(this, R.layout.list_activity);
+        getSupportActionBar().setTitle("ListView");
         final List<String> mList = fakeData();
         mBinding.list.setAdapter(
                 new ArrayAdapter<String>(this, R.layout.child_status_item, R.id.tv_title,
@@ -61,8 +64,15 @@ public class DemoListActivity extends AppCompatActivity {
                         if (position % 2 == 0) {
                             myViewHolder.layout.setSwipeDirection(SwipeDragLayout.DIRECTION_LEFT);
                             myViewHolder.mTextView.setText("swipe left ");
+                            myViewHolder.menuLayout.setLayoutDirection(
+                                    LinearLayout.LAYOUT_DIRECTION_LTR);
+                            myViewHolder.layout.setBackgroundColor(Color.parseColor("#FF6347"));
+
                         } else {
+                            myViewHolder.menuLayout.setLayoutDirection(
+                                    LinearLayout.LAYOUT_DIRECTION_RTL);
                             myViewHolder.layout.setSwipeDirection(SwipeDragLayout.DIRECTION_RIGHT);
+                            myViewHolder.layout.setBackgroundColor(Color.parseColor("#FF6347"));
                             myViewHolder.mTextView.setText("swipe right ");
 
                         }
@@ -129,6 +139,7 @@ public class DemoListActivity extends AppCompatActivity {
         public ImageView deleteIv;
         public ImageView starIv;
         public SwipeDragLayout layout;
+        public LinearLayout menuLayout;
 
         public MyViewHolder(View itemView) {
             mTextView = itemView.findViewById(R.id.tv_title);
@@ -136,6 +147,7 @@ public class DemoListActivity extends AppCompatActivity {
             deleteIv = itemView.findViewById(R.id.trash);
             starIv = itemView.findViewById(R.id.star);
             layout = (SwipeDragLayout) itemView;
+            menuLayout = (LinearLayout) itemView.findViewById(R.id.menu_layout);
         }
 
     }

@@ -9,8 +9,10 @@
             type="vienan.app.expandableswipelistview.model.LineItem"/>
 
         <variable
-            name="presenter"
-            type="vienan.app.expandableswipelistview.MainActivity.ItemPresenter"/>
+                name="presenter"
+                type="vienan.app.expandableswipelistview.adapter.BindingViewAdapter.ItemClickPresenter"/>
+
+
     </data>
 
 
@@ -18,14 +20,13 @@
                 android:id="@+id/swip_layout"
                 android:layout_width="match_parent"
                 android:layout_height="60dp"
-                android:background="#FF6347"
                 app:click_to_close="true"
-                app:swipe_direction="right"
+                app:swipe_direction="left"
                 app:swipe_enable="true"
                 app:ios="true">
 
             <LinearLayout
-                    android:id="@+id/item_surface"
+                    android:id="@+id/content_layout"
                     android:layout_width="match_parent"
                     android:layout_height="60dp"
                     android:background="#ffffff"
@@ -40,6 +41,7 @@
                         android:layout_marginLeft="@dimen/activity_horizontal_margin"
                         android:background="@drawable/type_edit"
                         android:scaleType="centerInside"
+                        android:onClick="@{(v)->presenter.onItemClick(v,item)}"
                         android:src="@mipmap/edit"/>
 
                 <TextView
@@ -50,13 +52,14 @@
                         android:gravity="center_vertical|right"
                         android:maxLines="1"
                         android:paddingRight="@dimen/activity_horizontal_margin"
-                        android:onClick="@{()->presenter.onContentClick(item)}"
+                        android:onClick="@{(v)->presenter.onItemClick(v,item)}"
                         android:text="@{item.content}"
                         android:textColor="#000000"
                         tools:text="this is content"/>
             </LinearLayout>
 
             <LinearLayout
+                    android:id="@+id/menu_layout"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:orientation="horizontal"
@@ -67,8 +70,8 @@
                         android:layout_width="70dp"
                         android:layout_height="60dp"
                         android:background="#FF6347"
-                        android:onClick="@{()->presenter.onDeleteClick(item)}"
                         android:paddingLeft="25dp"
+                        android:onClick="@{(v)->presenter.onItemClick(v,item)}"
                         android:paddingRight="25dp"
                         android:src="@mipmap/trash"/>
 
@@ -77,9 +80,9 @@
                         android:layout_width="70dp"
                         android:layout_height="60dp"
                         android:background="#4cd964"
-                        android:onClick="@{()->presenter.onStarClick(item)}"
                         android:paddingLeft="22dp"
                         android:paddingRight="22dp"
+                        android:onClick="@{(v)->presenter.onItemClick(v,item)}"
                         android:src="@mipmap/star"/>
 
 

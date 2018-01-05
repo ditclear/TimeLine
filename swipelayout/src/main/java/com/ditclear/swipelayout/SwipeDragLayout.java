@@ -11,7 +11,6 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.FrameLayout;
-import android.widget.LinearLayout;
 
 /**
  * Created by ditclear on 16/7/12. 可滑动的layout extends FrameLayout
@@ -149,8 +148,15 @@ public class SwipeDragLayout extends FrameLayout {
         }
     }
 
+    public int getSwipeDirection() {
+        return swipeDirection;
+    }
+
     public void setSwipeDirection(int swipeDirection) {
-        this.swipeDirection = swipeDirection;
+        if (this.swipeDirection != swipeDirection) {
+            this.swipeDirection = swipeDirection;
+            requestLayout();
+        }
     }
 
     private void autoLeft() {
@@ -211,9 +217,8 @@ public class SwipeDragLayout extends FrameLayout {
 
     public void close() {
         mDragHelper.smoothSlideViewTo(contentView, originPos.x, originPos.y);
-
         isOpen = false;
-        mCacheView = null;
+        mCacheView=null;
         invalidate();
     }
 
@@ -225,9 +230,11 @@ public class SwipeDragLayout extends FrameLayout {
                     getParent().requestDisallowInterceptTouchEvent(true);
                     if (mCacheView != this) {
                         mCacheView.close();
+                        mCacheView = null;
                         return true;
                     } else if (isOpen && mDragHelper.isViewUnder(contentView, (int) ev.getX(),
                             (int) ev.getY())) {
+                        getParent().requestDisallowInterceptTouchEvent(true);
                         return true;
                     }
                 }
@@ -237,6 +244,21 @@ public class SwipeDragLayout extends FrameLayout {
         return mDragHelper.shouldInterceptTouchEvent(ev);
 
 
+    }
+
+    public void setOpen(boolean open) {
+        if (open) {
+            menuView.layout(originPos.x, originPos.y, originPos.x + menuView.getWidth(),
+                    contentView.getBottom());
+        }else {
+            if (swipeDirection==DIRECTION_LEFT) {
+                menuView.layout(originPos.x-menuView.getWidth(), originPos.y, originPos.x + contentView.getWidth()-menuView.getWidth(),
+                        contentView.getBottom());
+            }else {
+                menuView.layout(originPos.x+menuView.getWidth(), originPos.y, originPos.x + contentView.getWidth()+menuView.getWidth(),
+                        contentView.getBottom());
+            }
+        }
     }
 
 
@@ -257,15 +279,13 @@ public class SwipeDragLayout extends FrameLayout {
         originPos.x = contentView.getLeft();
         originPos.y = contentView.getTop();
 
+        Log.d(TAG, "onLayout: isOPen" + isOpen);
         if (DIRECTION_LEFT == swipeDirection) {
             //左滑
-            menuView.setLayoutDirection(LinearLayout.LAYOUT_DIRECTION_LTR);
             menuView.layout(contentView.getWidth(), menuView.getTop(),
                     contentView.getWidth() + menuView.getWidth(), menuView.getBottom());
-
         } else {
             //右滑
-            menuView.setLayoutDirection(LinearLayout.LAYOUT_DIRECTION_RTL);
             menuView.layout(-menuView.getWidth(), menuView.getTop(), contentView.getLeft()
                     , menuView.getBottom());
         }
@@ -285,6 +305,13 @@ public class SwipeDragLayout extends FrameLayout {
                     ViewGroup.LayoutParams.WRAP_CONTENT);
             params.gravity = Gravity.END;
             menuView.setLayoutParams(params);
+            if (isInEditMode()) {
+                menuView.layout(contentView.getWidth(), menuView.getTop(),
+                        contentView.getWidth() + menuView.getWidth(), menuView.getBottom());
+            }
+        } else if (isInEditMode()) {
+            menuView.layout(-menuView.getWidth(), menuView.getTop(), contentView.getLeft()
+                    , menuView.getBottom());
         }
     }
 
@@ -300,8 +327,8 @@ public class SwipeDragLayout extends FrameLayout {
     protected void onDetachedFromWindow() {
         if (mCacheView == this) {
             mCacheView.close();
+            mCacheView = null;
         }
-        Log.d(TAG, "onDetachedFromWindow() called");
         super.onDetachedFromWindow();
 
     }
