@@ -29,10 +29,9 @@
 | ios             | boolean |   false |     拖动越界回弹效果     |
 | swipe_enable    | boolean |    true |       开启滑动       |
 | swipe_direction |   int   |       1 | 滑动方向,默认1是左滑，2为右滑 |
-### 回调监听
+###回调监听
 
 ```java
-	//滑动监听
     public interface SwipeListener {
 
         /**
