@@ -11,6 +11,15 @@ public class LineItem {
     private String content;
     private boolean isLeft;
 
+    private boolean isOpened=false;
+
+    public boolean isOpened() {
+        return isOpened;
+    }
+
+    public void setOpened(boolean opened) {
+        isOpened = opened;
+    }
 
     public LineItem(String content, boolean isLeft) {
         this.content = content;

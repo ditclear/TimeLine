@@ -78,6 +78,7 @@ public class RecyclerActivity extends AppCompatActivity
     @Override
     public void decorator(BindingViewHolder holder, final int position, int viewType) {
         final ChildStatusItemBinding binding = (ChildStatusItemBinding) holder.getBinding();
+        final LineItem lineItem=mDatas.get(position);
         if (mDatas.get(position).isLeft()) {
             binding.swipLayout.setSwipeDirection(SwipeDragLayout.DIRECTION_LEFT);
             binding.menuLayout.setLayoutDirection(LinearLayout.LAYOUT_DIRECTION_LTR);
@@ -85,12 +86,12 @@ public class RecyclerActivity extends AppCompatActivity
             binding.swipLayout.setSwipeDirection(SwipeDragLayout.DIRECTION_RIGHT);
             binding.menuLayout.setLayoutDirection(LinearLayout.LAYOUT_DIRECTION_RTL);
         }
+
         binding.trash.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                binding.swipLayout.close();
-                toast("delete"+mDatas.get(position).getContent());
-                mDatas.remove(position);
+                toast("delete   "+lineItem.getContent());
+                mDatas.remove(lineItem);
             }
         });
         binding.swipLayout.setBackgroundColor(Color.parseColor("#FF6347"));
@@ -103,11 +104,13 @@ public class RecyclerActivity extends AppCompatActivity
             @Override
             public void onOpened(SwipeDragLayout layout) {
 //                binding.tvTitle.setText("opened");
+                mDatas.get(position).setOpened(true);
             }
 
             @Override
             public void onClosed(SwipeDragLayout layout) {
 //                binding.tvTitle.setText("closed");
+                mDatas.get(position).setOpened(false);
             }
         });
     }

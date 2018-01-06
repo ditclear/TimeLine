@@ -216,6 +216,7 @@ public class SwipeDragLayout extends FrameLayout {
     }
 
     public void close() {
+
         mDragHelper.smoothSlideViewTo(contentView, originPos.x, originPos.y);
         isOpen = false;
         mCacheView=null;
@@ -246,22 +247,6 @@ public class SwipeDragLayout extends FrameLayout {
 
     }
 
-    public void setOpen(boolean open) {
-        if (open) {
-            menuView.layout(originPos.x, originPos.y, originPos.x + menuView.getWidth(),
-                    contentView.getBottom());
-        }else {
-            if (swipeDirection==DIRECTION_LEFT) {
-                menuView.layout(originPos.x-menuView.getWidth(), originPos.y, originPos.x + contentView.getWidth()-menuView.getWidth(),
-                        contentView.getBottom());
-            }else {
-                menuView.layout(originPos.x+menuView.getWidth(), originPos.y, originPos.x + contentView.getWidth()+menuView.getWidth(),
-                        contentView.getBottom());
-            }
-        }
-    }
-
-
     @Override
     public boolean onTouchEvent(MotionEvent event) {
         if (swipeEnable) {
@@ -280,13 +265,14 @@ public class SwipeDragLayout extends FrameLayout {
         originPos.y = contentView.getTop();
 
         Log.d(TAG, "onLayout: isOPen" + isOpen);
+
         if (DIRECTION_LEFT == swipeDirection) {
             //左滑
             menuView.layout(contentView.getWidth(), menuView.getTop(),
                     contentView.getWidth() + menuView.getWidth(), menuView.getBottom());
         } else {
             //右滑
-            menuView.layout(-menuView.getWidth(), menuView.getTop(), contentView.getLeft()
+            menuView.layout(-menuView.getWidth(), menuView.getTop(), originPos.x
                     , menuView.getBottom());
         }
 
@@ -336,6 +322,9 @@ public class SwipeDragLayout extends FrameLayout {
     @Override
     protected void onAttachedToWindow() {
         super.onAttachedToWindow();
+        if (menuView!=null&&menuView.getTranslationX()!=0){
+            menuView.setTranslationX(0);
+        }
     }
 
     public void addListener(SwipeListener listener) {
