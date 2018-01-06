@@ -7,9 +7,11 @@
 
 #### 截图
 
+![](screenshot/feature.gif)					![](screenshot/modify.gif)
+
 ![](screenshot/recyclerview.gif)					![](screenshot/listview.gif)
 
-![](screenshot/modify.gif)
+
 
 
 

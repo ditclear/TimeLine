@@ -54,6 +54,10 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 Toast.makeText(this, "edit", Toast.LENGTH_SHORT).show();
                 break;
             }
+            case R.id.tv_title: {
+                Toast.makeText(this, "this is content", Toast.LENGTH_SHORT).show();
+                break;
+            }
             case R.id.trash: {
                 Toast.makeText(this, "delete", Toast.LENGTH_SHORT).show();
                 break;
