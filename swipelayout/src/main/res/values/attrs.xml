@@ -3,6 +3,10 @@
     <declare-styleable name="SwipeDragLayout">
         <attr name="need_offset" format="float"/>
         <attr name="ios" format="boolean"/>
-        <attr name="click_to_close" format="boolean"/>
+        <attr name="swipe_enable" format="boolean"/>
+        <attr name="swipe_direction" format="enum">
+            <enum name="left" value="1"/>
+            <enum name="right" value="2"/>
+        </attr>
     </declare-styleable>
 </resources>

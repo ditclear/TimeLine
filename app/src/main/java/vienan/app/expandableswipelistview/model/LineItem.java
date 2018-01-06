@@ -9,11 +9,21 @@ package vienan.app.expandableswipelistview.model;
 public class LineItem {
 
     private String content;
-    private boolean isTitle;
+    private boolean isLeft;
 
-    public LineItem(String content, boolean isTitle) {
+    private boolean isOpened=false;
+
+    public boolean isOpened() {
+        return isOpened;
+    }
+
+    public void setOpened(boolean opened) {
+        isOpened = opened;
+    }
+
+    public LineItem(String content, boolean isLeft) {
         this.content = content;
-        this.isTitle = isTitle;
+        this.isLeft = isLeft;
     }
 
     public String getContent() {
@@ -24,11 +34,11 @@ public class LineItem {
         this.content = content;
     }
 
-    public boolean isTitle() {
-        return isTitle;
+    public boolean isLeft() {
+        return isLeft;
     }
 
-    public void setTitle(boolean title) {
-        isTitle = title;
+    public void setLeft(boolean left) {
+        isLeft = left;
     }
 }

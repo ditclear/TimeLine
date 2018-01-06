@@ -1,36 +1,124 @@
 <?xml version="1.0" encoding="utf-8"?>
-<layout xmlns:android="http://schemas.android.com/apk/res/android"
-        xmlns:app="http://schemas.android.com/apk/res-auto">
+<layout
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        >
 
     <data>
 
         <variable
-            name="adapter"
-            type="android.support.v7.widget.RecyclerView.Adapter"/>
+                name="presenter"
+                type="android.view.View.OnClickListener"/>
+
     </data>
 
-    <RelativeLayout
-        android:layout_width="match_parent"
-        android:layout_height="match_parent">
-        <View
-            android:id="@+id/view_help"
-            android:layout_width="1dp"
-            android:layout_height="fill_parent"
-            android:layout_marginLeft="26dp"
-            android:background="#b3b3b3"/>
-        <android.support.v7.widget.RecyclerView
-            android:id="@+id/recycler_view"
+    <android.support.constraint.ConstraintLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:background="@android:color/background_light"
-            android:clipToPadding="false"
-            android:fadeScrollbars="true"
-            android:paddingLeft="@dimen/activity_horizontal_margin"
-            android:paddingRight="@dimen/activity_horizontal_margin"
-            android:scrollbars="vertical"
-            app:adapter="@{adapter}"
-            app:layoutManager="LinearLayoutManager">
-        </android.support.v7.widget.RecyclerView>
+            android:layout_height="match_parent">
 
-    </RelativeLayout>
+        <Button
+                android:id="@+id/list_btn"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="100dp"
+                android:onClick="@{(v)->presenter.onClick(v)}"
+                android:text="listView"
+                android:textAllCaps="false"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintRight_toLeftOf="@+id/recycler_btn"
+                app:layout_constraintTop_toTopOf="parent"/>
+
+        <Button
+                android:id="@+id/recycler_btn"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:onClick="@{(v)->presenter.onClick(v)}"
+                android:text="recyclerview"
+                app:layout_constraintLeft_toRightOf="@+id/list_btn"
+                app:layout_constraintRight_toRightOf="parent"
+                app:layout_constraintTop_toTopOf="@id/list_btn"/>
+
+        <com.ditclear.swipelayout.SwipeDragLayout
+                android:id="@+id/swip_layout"
+                android:layout_width="0dp"
+                android:layout_height="60dp"
+                android:layout_marginTop="200dp"
+                android:background="#FF6347"
+                app:ios="true"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintRight_toRightOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:swipe_direction="left"
+                app:swipe_enable="true">
+
+            <LinearLayout
+                    android:id="@+id/content_layout"
+                    android:layout_width="match_parent"
+                    android:layout_height="60dp"
+                    android:background="#ffffff"
+                    android:gravity="center_vertical"
+                    android:orientation="horizontal"
+                    android:tag="content">
+
+                <ImageView
+                        android:id="@+id/iv_type"
+                        android:layout_width="40dp"
+                        android:layout_height="40dp"
+                        android:layout_marginLeft="@dimen/activity_horizontal_margin"
+                        android:background="@drawable/type_edit"
+                        android:scaleType="centerInside"
+                        android:onClick="@{(v)->presenter.onClick(v)}"
+                        android:src="@mipmap/edit"/>
+
+                <TextView
+                        android:id="@+id/tv_title"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:ellipsize="end"
+                        android:gravity="center_vertical|right"
+                        android:maxLines="1"
+                        android:paddingRight="@dimen/activity_horizontal_margin"
+                        android:text="点击下方按钮修改参数"
+                        android:textColor="#000000"/>
+            </LinearLayout>
+
+            <LinearLayout
+                    android:id="@+id/menu_layout"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:tag="menu">
+
+                <ImageView
+                        android:id="@+id/trash"
+                        android:layout_width="70dp"
+                        android:layout_height="60dp"
+                        android:background="#FF6347"
+                        android:paddingLeft="25dp"
+                        android:paddingRight="25dp"
+                        android:onClick="@{(v)->presenter.onClick(v)}"
+                        android:src="@mipmap/trash"/>
+
+                <ImageView
+                        android:id="@+id/star"
+                        android:layout_width="70dp"
+                        android:layout_height="60dp"
+                        android:background="#4cd964"
+                        android:paddingLeft="22dp"
+                        android:paddingRight="22dp"
+                        android:onClick="@{(v)->presenter.onClick(v)}"
+                        android:src="@mipmap/star"/>
+            </LinearLayout>
+        </com.ditclear.swipelayout.SwipeDragLayout>
+
+        <android.support.design.widget.FloatingActionButton
+                android:id="@+id/fab_btn"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="16dp"
+                android:layout_marginRight="16dp"
+                android:src="@mipmap/edit"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintRight_toRightOf="parent"/>
+    </android.support.constraint.ConstraintLayout>
 </layout>
