@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<layout xmlns:android="http://schemas.android.com/apk/res/android"
+<layout
+        xmlns:android="http://schemas.android.com/apk/res/android"
         xmlns:app="http://schemas.android.com/apk/res-auto"
         >
 
@@ -43,7 +44,6 @@
                 android:layout_height="60dp"
                 android:layout_marginTop="200dp"
                 android:background="#FF6347"
-                app:click_to_close="true"
                 app:ios="true"
                 app:layout_constraintLeft_toLeftOf="parent"
                 app:layout_constraintRight_toRightOf="parent"
@@ -78,7 +78,7 @@
                         android:gravity="center_vertical|right"
                         android:maxLines="1"
                         android:paddingRight="@dimen/activity_horizontal_margin"
-                        android:text="长按切换滑动方向"
+                        android:text="点击下方按钮修改参数"
                         android:textColor="#000000"/>
             </LinearLayout>
 
@@ -110,5 +110,15 @@
                         android:src="@mipmap/star"/>
             </LinearLayout>
         </com.ditclear.swipelayout.SwipeDragLayout>
+
+        <android.support.design.widget.FloatingActionButton
+                android:id="@+id/fab_btn"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="16dp"
+                android:layout_marginRight="16dp"
+                android:src="@mipmap/edit"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintRight_toRightOf="parent"/>
     </android.support.constraint.ConstraintLayout>
 </layout>

@@ -20,7 +20,6 @@
                 android:id="@+id/swip_layout"
                 android:layout_width="match_parent"
                 android:layout_height="60dp"
-                app:click_to_close="true"
                 app:swipe_direction="left"
                 app:swipe_enable="true"
                 app:ios="true">

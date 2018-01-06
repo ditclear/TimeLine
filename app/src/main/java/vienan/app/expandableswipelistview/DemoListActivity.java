@@ -63,7 +63,6 @@ public class DemoListActivity extends AppCompatActivity {
                     private void render(final int position, final MyViewHolder myViewHolder) {
                         if (position % 2 == 0) {
                             myViewHolder.layout.setSwipeDirection(SwipeDragLayout.DIRECTION_LEFT);
-                            myViewHolder.mTextView.setText("swipe left ");
                             myViewHolder.menuLayout.setLayoutDirection(
                                     LinearLayout.LAYOUT_DIRECTION_LTR);
                             myViewHolder.layout.setBackgroundColor(Color.parseColor("#FF6347"));
@@ -73,9 +72,9 @@ public class DemoListActivity extends AppCompatActivity {
                                     LinearLayout.LAYOUT_DIRECTION_RTL);
                             myViewHolder.layout.setSwipeDirection(SwipeDragLayout.DIRECTION_RIGHT);
                             myViewHolder.layout.setBackgroundColor(Color.parseColor("#FF6347"));
-                            myViewHolder.mTextView.setText("swipe right ");
 
                         }
+                        myViewHolder.mTextView.setText(mList.get(position));
                         myViewHolder.mTextView.setOnClickListener(
                                 new View.OnClickListener() {
                                     @Override
@@ -98,11 +97,11 @@ public class DemoListActivity extends AppCompatActivity {
                                 new View.OnClickListener() {
                                     @Override
                                     public void onClick(View v) {
+                                        Toast.makeText(v.getContext(), "delete  "+mList.get(position),
+                                                Toast.LENGTH_SHORT).show();
                                         myViewHolder.layout.close();
                                         mList.remove(position);
                                         notifyDataSetChanged();
-                                        Toast.makeText(v.getContext(), "delete",
-                                                Toast.LENGTH_SHORT).show();
                                     }
                                 });
                         myViewHolder.starIv.setOnClickListener(

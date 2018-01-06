@@ -25,7 +25,8 @@ public class SwipeDragLayout extends FrameLayout {
     private View menuView;
     private ViewDragHelper mDragHelper;
     private Point originPos = new Point();
-    private boolean isOpen, ios, swipeEnable, clickToClose;
+    private boolean isOpen, ios, swipeEnable;
+    private boolean clickToClose=true;
     private int swipeDirection = 1;
     private float offsetRatio;
     private float needOffset = 0.2f;
@@ -46,7 +47,6 @@ public class SwipeDragLayout extends FrameLayout {
         needOffset = array.getFloat(R.styleable.SwipeDragLayout_need_offset, 0.2f);
         //是否有回弹效果
         ios = array.getBoolean(R.styleable.SwipeDragLayout_ios, false);
-        clickToClose = array.getBoolean(R.styleable.SwipeDragLayout_click_to_close, false);
         swipeEnable = array.getBoolean(R.styleable.SwipeDragLayout_swipe_enable, true);
         swipeDirection = array.getInt(R.styleable.SwipeDragLayout_swipe_direction, DIRECTION_LEFT);
         init();
@@ -157,6 +157,14 @@ public class SwipeDragLayout extends FrameLayout {
             this.swipeDirection = swipeDirection;
             requestLayout();
         }
+    }
+
+    public void setSwipeEnable(boolean swipeEnable) {
+        this.swipeEnable = swipeEnable;
+    }
+
+    public void setNeedOffset(float needOffset) {
+        this.needOffset = needOffset;
     }
 
     private void autoLeft() {
@@ -314,6 +322,9 @@ public class SwipeDragLayout extends FrameLayout {
         if (mCacheView == this) {
             mCacheView.close();
             mCacheView = null;
+        }
+        if (menuView!=null&&menuView.getTranslationX()!=0){
+            menuView.setTranslationX(0f);
         }
         super.onDetachedFromWindow();
 

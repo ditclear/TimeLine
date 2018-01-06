@@ -2,7 +2,6 @@ package vienan.app.expandableswipelistview;
 
 import android.content.Intent;
 import android.databinding.DataBindingUtil;
-import android.graphics.Color;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
@@ -11,6 +10,13 @@ import android.widget.LinearLayout;
 import android.widget.Toast;
 
 import com.ditclear.swipelayout.SwipeDragLayout;
+import com.google.android.libraries.remixer.Remixer;
+import com.google.android.libraries.remixer.annotation.BooleanVariableMethod;
+import com.google.android.libraries.remixer.annotation.RangeVariableMethod;
+import com.google.android.libraries.remixer.annotation.RemixerBinder;
+import com.google.android.libraries.remixer.storage.LocalStorage;
+import com.google.android.libraries.remixer.ui.RemixerInitialization;
+import com.google.android.libraries.remixer.ui.view.RemixerFragment;
 
 import vienan.app.expandableswipelistview.databinding.ActivityMainBinding;
 
@@ -23,22 +29,14 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         super.onCreate(savedInstanceState);
         mMainBinding= DataBindingUtil.setContentView(this,R.layout.activity_main);
         mMainBinding.setPresenter(this);
-        mMainBinding.tvTitle.setOnLongClickListener(new View.OnLongClickListener() {
-            @Override
-            public boolean onLongClick(View v) {
-                if (mMainBinding.swipLayout.getSwipeDirection()== SwipeDragLayout.DIRECTION_LEFT){
-                    mMainBinding.swipLayout.setSwipeDirection(SwipeDragLayout.DIRECTION_RIGHT);
-                    mMainBinding.tvTitle.setText("右滑");
-                    mMainBinding.menuLayout.setLayoutDirection(LinearLayout.LAYOUT_DIRECTION_RTL);
-                }else {
-                    mMainBinding.swipLayout.setBackgroundColor(Color.parseColor("#FF6347"));
-                    mMainBinding.swipLayout.setSwipeDirection(SwipeDragLayout.DIRECTION_LEFT);
-                    mMainBinding.menuLayout.setLayoutDirection(LinearLayout.LAYOUT_DIRECTION_LTR);
-                    mMainBinding.tvTitle.setText("左滑");
-                }
-                return true;
-            }
-        });
+        RemixerFragment.newInstance().attachToFab(this,mMainBinding.fabBtn);
+
+        //debug ui
+        RemixerInitialization.initRemixer(getApplication());
+        Remixer.getInstance().setSynchronizationMechanism(new LocalStorage(getApplicationContext()));
+        RemixerBinder.bind(this);
+
+
     }
 
     @Override
@@ -68,6 +66,30 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     }
 
     void navigateTo(Class c) {
+
         startActivity(new Intent(this, c));
     }
+
+    @RangeVariableMethod(minValue = 1F, maxValue = 9F, initialValue = 2F)
+    public void 设置最小距离(Float offsetRatio) {
+        mMainBinding.swipLayout.setNeedOffset(offsetRatio/10);
+    }
+
+    @BooleanVariableMethod(initialValue = true)
+    public void 开启IOS效果(Boolean ios) {
+        mMainBinding.swipLayout.setIos(ios);
+    }
+
+    @BooleanVariableMethod(initialValue = true)
+    public void 切换滑动方向(Boolean left) {
+        mMainBinding.swipLayout.setSwipeDirection(left?SwipeDragLayout.DIRECTION_LEFT:SwipeDragLayout.DIRECTION_RIGHT);
+        mMainBinding.menuLayout.setLayoutDirection(left?LinearLayout.LAYOUT_DIRECTION_LTR:LinearLayout.LAYOUT_DIRECTION_RTL);
+    }
+
+    @BooleanVariableMethod(initialValue = true)
+    public void 是否可滑动(Boolean enable) {
+        mMainBinding.swipLayout.setSwipeEnable(enable);
+    }
+
+
 }

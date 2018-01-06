@@ -35,6 +35,8 @@ dependencies {
     compile project(':swipelayout')
     compile 'com.android.support:recyclerview-v7:26.1.0'
     compile "org.jetbrains.kotlin:kotlin-stdlib-jre7:$kotlin_version"
+    compile 'com.github.material-foundation.material-remixer-android:remixer:1.0'
+    kapt 'com.github.material-foundation.material-remixer-android:remixer_annotation:1.0'
 }
 repositories {
     mavenCentral()

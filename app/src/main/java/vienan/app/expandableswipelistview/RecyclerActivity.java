@@ -63,7 +63,7 @@ public class RecyclerActivity extends AppCompatActivity
     List<LineItem> fakeData() {
         List<LineItem> items = new ArrayList<>();
         int d = 1;
-        for (int i = 1; i <= 30; i++) {
+        for (int i = 0; i <= 30; i++) {
             LineItem lineItem;
             if (i % 2 == 0) {
                 lineItem = new LineItem("item"+i, true);
