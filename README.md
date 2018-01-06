@@ -21,7 +21,7 @@
 - sample使用了DataBinding和kotlin 进行了多类型的绑定，对于了解和使用DataBinding大有益处，添加多种Type更是十分简单,再也不用extends RecyclerView.Adapter了，可以参考[BindingListAdapter](https://github.com/ditclear/BindingListAdapter)
 
 
-###自定义属性
+####自定义属性
 
 | attr            |  type   | default |     meaning      |
 | --------------- | :-----: | ------: | :--------------: |
@@ -29,10 +29,11 @@
 | ios             | boolean |   false |     拖动越界回弹效果     |
 | swipe_enable    | boolean |    true |       开启滑动       |
 | swipe_direction |   int   |       1 | 滑动方向,默认1是左滑，2为右滑 |
-### 回调监听
+
+
+####回调监听
 
 ```java
-	//滑动监听
     public interface SwipeListener {
 
         /**
