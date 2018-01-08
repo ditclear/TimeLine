@@ -26,10 +26,12 @@ public class SwipeDragLayout extends FrameLayout {
     private Point originPos = new Point();
     private boolean isOpen, ios, swipeEnable;
     private boolean clickToClose=true;
-    private int swipeDirection = 1;
+    private int swipeDirection = DIRECTION_LEFT;
     private float offsetRatio;
     private float needOffset = 0.2f;
     private SwipeListener mListener;
+    //防止多指拖动,当第一个被拖动时，置为true,其它的则不触发拖动
+    private static boolean isTouching;
 
     public SwipeDragLayout(Context context) {
         this(context, null);
@@ -43,10 +45,13 @@ public class SwipeDragLayout extends FrameLayout {
         super(context, attrs, defStyleAttr);
 
         TypedArray array = context.obtainStyledAttributes(attrs, R.styleable.SwipeDragLayout);
+        //最小滑动距离
         needOffset = array.getFloat(R.styleable.SwipeDragLayout_need_offset, 0.2f);
         //是否有回弹效果
         ios = array.getBoolean(R.styleable.SwipeDragLayout_ios, false);
+        //是否可滑动
         swipeEnable = array.getBoolean(R.styleable.SwipeDragLayout_swipe_enable, true);
+        //滑动方向，默认左滑
         swipeDirection = array.getInt(R.styleable.SwipeDragLayout_swipe_direction, DIRECTION_LEFT);
         init();
         array.recycle();
@@ -112,6 +117,7 @@ public class SwipeDragLayout extends FrameLayout {
             @Override
             public void onViewReleased(View releasedChild, float xvel, float yvel) {
                 super.onViewReleased(releasedChild, xvel, yvel);
+                //松手时，判断打开还是关闭
                 if (swipeDirection == DIRECTION_LEFT) {
                     autoLeft();
                 } else {
@@ -232,6 +238,26 @@ public class SwipeDragLayout extends FrameLayout {
     }
 
     @Override
+    public boolean dispatchTouchEvent(MotionEvent ev) {
+        switch (ev.getAction()) {
+            //防止多指拖拽
+            case MotionEvent.ACTION_DOWN:
+                if (isTouching){
+                    return false;
+                }else {
+                    isTouching=true;
+                }
+                break;
+            case MotionEvent.ACTION_UP:
+            case MotionEvent.ACTION_CANCEL:
+                if (isTouching){
+                    isTouching=false;
+                }
+        }
+        return super.dispatchTouchEvent(ev);
+    }
+
+    @Override
     public boolean onInterceptTouchEvent(MotionEvent ev) {
         switch (ev.getAction()) {
             case MotionEvent.ACTION_DOWN:
@@ -243,6 +269,7 @@ public class SwipeDragLayout extends FrameLayout {
                         return true;
                     } else if (isOpen && mDragHelper.isViewUnder(contentView, (int) ev.getX(),
                             (int) ev.getY())) {
+                        //open时，不触发contentView的点击事件
                         getParent().requestDisallowInterceptTouchEvent(true);
                         return true;
                     }
@@ -329,6 +356,7 @@ public class SwipeDragLayout extends FrameLayout {
     @Override
     protected void onAttachedToWindow() {
         super.onAttachedToWindow();
+        //recyclerView复用时有点问题，需加以下代码确保layout完全关闭
         if (menuView!=null&&menuView.getTranslationX()!=0){
             menuView.setTranslationX(0);
         }

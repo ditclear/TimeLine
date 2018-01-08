@@ -25,13 +25,90 @@
 
 #### 自定义属性
 
-| attr            |  type   | default |     meaning      |
-| --------------- | :-----: | ------: | :--------------: |
-| need_offset     |  float  |    0.2f |    最小需要滑动的距离     |
-| ios             | boolean |    true |     拖动越界回弹效果     |
-| swipe_enable    | boolean |    true |       开启滑动       |
-| swipe_direction |   int   |       1 | 滑动方向,默认1是左滑，2为右滑 |
+| attr            |  type   | default |          meaning          |
+| --------------- | :-----: | ------: | :-----------------------: |
+| need_offset     |  float  |    0.2f |         最小需要滑动的距离         |
+| ios             | boolean |    true |         拖动越界回弹效果          |
+| swipe_enable    | boolean |    true |           开启滑动            |
+| swipe_direction |  enum   |    left | 滑动方向,默认1是左滑left，2为右滑right |
 
+#### 示例
+
+```xml
+ <com.ditclear.swipelayout.SwipeDragLayout
+                android:id="@+id/swip_layout"
+                android:layout_width="match_parent"
+                android:layout_height="60dp"
+                app:swipe_direction="left"
+                app:swipe_enable="true"
+                app:ios="true">
+
+            <LinearLayout
+                    android:id="@+id/content_layout"
+                    android:layout_width="match_parent"
+                    android:layout_height="60dp"
+                    android:background="#ffffff"
+                    android:gravity="center_vertical"
+                    android:orientation="horizontal"
+                    android:tag="content">
+
+                <ImageView
+                        android:id="@+id/iv_type"
+                        android:layout_width="40dp"
+                        android:layout_height="40dp"
+                        android:layout_marginLeft="@dimen/activity_horizontal_margin"
+                        android:background="@drawable/type_edit"
+                        android:scaleType="centerInside"
+                        android:onClick="@{(v)->presenter.onItemClick(v,item)}"
+                        android:src="@mipmap/edit"/>
+
+                <TextView
+                        android:id="@+id/tv_title"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:ellipsize="end"
+                        android:gravity="center_vertical|right"
+                        android:maxLines="1"
+                        android:paddingRight="@dimen/activity_horizontal_margin"
+                        android:onClick="@{(v)->presenter.onItemClick(v,item)}"
+                        android:text="@{item.content}"
+                        android:textColor="#000000"
+                        tools:text="this is content"/>
+            </LinearLayout>
+
+            <LinearLayout
+                    android:id="@+id/menu_layout"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:tag="menu">
+
+                <ImageView
+                        android:id="@+id/trash"
+                        android:layout_width="70dp"
+                        android:layout_height="60dp"
+                        android:background="#FF6347"
+                        android:paddingLeft="25dp"
+                        android:onClick="@{(v)->presenter.onItemClick(v,item)}"
+                        android:paddingRight="25dp"
+                        android:src="@mipmap/trash"/>
+
+                <ImageView
+                        android:id="@+id/star"
+                        android:layout_width="70dp"
+                        android:layout_height="60dp"
+                        android:background="#4cd964"
+                        android:paddingLeft="22dp"
+                        android:paddingRight="22dp"
+                        android:onClick="@{(v)->presenter.onItemClick(v,item)}"
+                        android:src="@mipmap/star"/>
+            </LinearLayout>
+        </com.ditclear.swipelayout.SwipeDragLayout>
+```
+
+> 注意
+
+暂时只支持两个子View，一个content，一个侧滑的menu，以后会支持
 
 #### 回调监听
 
