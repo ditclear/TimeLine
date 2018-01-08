@@ -5,7 +5,6 @@ import android.content.res.TypedArray;
 import android.graphics.Point;
 import android.support.v4.widget.ViewDragHelper;
 import android.util.AttributeSet;
-import android.util.Log;
 import android.view.Gravity;
 import android.view.MotionEvent;
 import android.view.View;
@@ -87,6 +86,14 @@ public class SwipeDragLayout extends FrameLayout {
             }
 
             @Override
+            public int clampViewPositionVertical(View child, int top, int dy) {
+                //fix issue 6 List滚动和Item左右滑动有冲突
+                // {@link https://github.com/ditclear/SwipeLayout/issues/6}
+                getParent().requestDisallowInterceptTouchEvent(true);
+                return super.clampViewPositionVertical(child, top, dy);
+            }
+
+            @Override
             public void onViewPositionChanged(View changedView, int left, int top, int dx, int dy) {
                 final int childWidth = menuView.getWidth();
                 //offsetRatio can callback here
@@ -97,8 +104,6 @@ public class SwipeDragLayout extends FrameLayout {
                     offsetRatio = ((float) left) / childWidth;
                     menuView.setTranslationX(Math.min(menuView.getWidth(), left));
                 }
-                Log.d(TAG, "onViewPositionChanged() called with: left ="
-                        + " [" + left + "],offsetRatio = ["+offsetRatio+"]");
                 if (mListener != null) {
                     mListener.onUpdate(SwipeDragLayout.this, offsetRatio, left);
                 }
@@ -198,10 +203,6 @@ public class SwipeDragLayout extends FrameLayout {
         }
     }
 
-    public void setClickToClose(boolean clickToClose) {
-        this.clickToClose = clickToClose;
-    }
-
     public void setIos(boolean ios) {
         this.ios = ios;
     }
@@ -224,7 +225,6 @@ public class SwipeDragLayout extends FrameLayout {
     }
 
     public void close() {
-
         mDragHelper.smoothSlideViewTo(contentView, originPos.x, originPos.y);
         isOpen = false;
         mCacheView=null;
@@ -248,7 +248,6 @@ public class SwipeDragLayout extends FrameLayout {
                     }
                 }
                 break;
-
         }
         return mDragHelper.shouldInterceptTouchEvent(ev);
 
@@ -271,8 +270,6 @@ public class SwipeDragLayout extends FrameLayout {
 
         originPos.x = contentView.getLeft();
         originPos.y = contentView.getTop();
-
-        Log.d(TAG, "onLayout: isOPen" + isOpen);
 
         if (DIRECTION_LEFT == swipeDirection) {
             //左滑
@@ -315,7 +312,6 @@ public class SwipeDragLayout extends FrameLayout {
             invalidate();
         }
     }
-
 
     @Override
     protected void onDetachedFromWindow() {

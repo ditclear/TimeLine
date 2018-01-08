@@ -98,19 +98,17 @@ public class RecyclerActivity extends AppCompatActivity
         binding.swipLayout.addListener(new SwipeDragLayout.SwipeListener() {
             @Override
             public void onUpdate(SwipeDragLayout layout, float offsetRatio, float offset) {
-
+                //do sth.
             }
 
             @Override
             public void onOpened(SwipeDragLayout layout) {
-//                binding.tvTitle.setText("opened");
-                mDatas.get(position).setOpened(true);
+                //do sth..
             }
 
             @Override
             public void onClosed(SwipeDragLayout layout) {
-//                binding.tvTitle.setText("closed");
-                mDatas.get(position).setOpened(false);
+                //do sth..
             }
         });
     }
