@@ -27,7 +27,7 @@
 
 | attr            |  type   | default |          meaning          |
 | --------------- | :-----: | ------: | :-----------------------: |
-| need_offset     |  float  |    0.2f |         最小需要滑动的距离         |
+| need_offset     |  float  |    0.2f |         最小需要滑动的比例         |
 | ios             | boolean |    true |         拖动越界回弹效果          |
 | swipe_enable    | boolean |    true |           开启滑动            |
 | swipe_direction |  enum   |    left | 滑动方向,默认1是左滑left，2为右滑right |
