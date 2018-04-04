@@ -1,6 +1,6 @@
 # TimeLine
 
-![](https://img.shields.io/badge/minSdk-17-brightgreen.svg)![](https://img.shields.io/badge/version-1.0.0-green.svg)![](https://img.shields.io/badge/star-353-blue.svg)![](https://img.shields.io/badge/fork-90-blue.svg)
+![](https://img.shields.io/badge/minSdk-17-brightgreen.svg)     ![](https://img.shields.io/badge/version-1.0.0-green.svg)   ![](https://img.shields.io/badge/star-353-blue.svg)     ![](https://img.shields.io/badge/fork-90-blue.svg)
 > 提供了仿IOS的越界回弹效果和左右滑动功能，可自由设置最小滑动距离和是否开启滑动功能
 
 示例：[demo.apk](apk/timeline.apk)
