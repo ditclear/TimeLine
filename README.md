@@ -1,9 +1,12 @@
 # TimeLine
-> 关于本项目
 
-最初的本意是做一个TimeLine时间轴，到后来逐渐成为了一个侧滑的自定义控件。也很感谢大家的支持，所以趁着年初有空闲，重构了当前项目。以后也会逐渐完善和维护本项目并提供maven依赖，再次感谢！
+![](https://img.shields.io/badge/minSdk-17-brightgreen.svg)![](https://img.shields.io/badge/version-1.0.0-green.svg)![](https://img.shields.io/badge/star-353-blue.svg)![](https://img.shields.io/badge/fork-90-blue.svg)
+> 提供了仿IOS的越界回弹效果和左右滑动功能，可自由设置最小滑动距离和是否开启滑动功能
 
-[demo.apk](apk/timeline.apk)
+示例：[demo.apk](apk/timeline.apk)
+
+#### Download
+    compile 'com.ditclear:swipedraglayout:1.0.0'
 
 #### 截图
 
@@ -137,7 +140,4 @@
     }
 ```
 
-### License
-
-[MIT](LICENSE.txt)
 

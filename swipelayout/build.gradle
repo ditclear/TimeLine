@@ -1,8 +1,9 @@
 apply plugin: 'com.android.library'
+apply plugin: 'com.novoda.bintray-release'
 
 android {
     compileSdkVersion 26
-    buildToolsVersion "26.0.1"
+    buildToolsVersion "26.0.2"
 
     defaultConfig {
         minSdkVersion 17
@@ -16,10 +17,21 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
     }
+    lintOptions {
+        abortOnError false
+    }
+
 }
 
 dependencies {
-    compile fileTree(dir: 'libs', include: ['*.jar'])
-    testCompile 'junit:junit:4.12'
     compile 'com.android.support:support-v4:26.1.0'
+}
+
+publish {
+    userOrg = 'vienan'
+    groupId = 'com.ditclear'
+    artifactId = 'swipedraglayout'
+    publishVersion = '1.0.0'
+    desc = 'a swipeable layout with overScroll effect'
+    website = 'https://github.com/ditclear/TimeLine'
 }
