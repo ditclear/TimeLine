@@ -69,6 +69,9 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         }
     }
 
+
+
+
     void navigateTo(Class c) {
 
         startActivity(new Intent(this, c));

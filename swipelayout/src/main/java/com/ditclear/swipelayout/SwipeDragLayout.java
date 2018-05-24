@@ -172,6 +172,10 @@ public class SwipeDragLayout extends FrameLayout {
 
     public void setSwipeEnable(boolean swipeEnable) {
         this.swipeEnable = swipeEnable;
+        if (!swipeEnable&&mCacheView!=null){
+            mCacheView.close();
+            mCacheView = null;
+        }
     }
 
     public void setNeedOffset(float needOffset) {
@@ -276,10 +280,17 @@ public class SwipeDragLayout extends FrameLayout {
                 }
                 break;
         }
-        return mDragHelper.shouldInterceptTouchEvent(ev);
+
+        if (swipeEnable) {
+            return mDragHelper.shouldInterceptTouchEvent(ev);
+        }else {
+            return super.onInterceptTouchEvent(ev);
+        }
 
 
     }
+
+
 
     @Override
     public boolean onTouchEvent(MotionEvent event) {
@@ -289,6 +300,7 @@ public class SwipeDragLayout extends FrameLayout {
         } else {
             return super.onTouchEvent(event);
         }
+
     }
 
     @Override

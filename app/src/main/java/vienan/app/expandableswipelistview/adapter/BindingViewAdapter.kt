@@ -22,11 +22,11 @@ abstract class BindingViewAdapter<T>(context: Context, protected val list: Obser
     var itemDecorator: ItemDecorator? = null
 
 
-    override fun onBindViewHolder(holder: BindingViewHolder<ViewDataBinding>?, position: Int) {
+    override fun onBindViewHolder(holder: BindingViewHolder<ViewDataBinding>, position: Int) {
         val item = list[position]
-        holder?.binding?.setVariable(BR.item, item)
-        holder?.binding?.setVariable(BR.presenter, itemPresenter)
-        holder?.binding?.executePendingBindings()
+        holder.binding.setVariable(BR.item, item)
+        holder.binding.setVariable(BR.presenter, itemPresenter)
+        holder.binding.executePendingBindings()
         itemDecorator?.decorator(holder, position, getItemViewType(position))
     }
 
@@ -36,6 +36,7 @@ abstract class BindingViewAdapter<T>(context: Context, protected val list: Obser
 
     interface ItemClickPresenter<in Any> {
         fun onItemClick(v: View? = null, item: Any)
+
     }
 
     interface ItemDecorator {

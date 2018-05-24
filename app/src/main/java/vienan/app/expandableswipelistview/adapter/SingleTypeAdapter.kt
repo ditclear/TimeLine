@@ -44,7 +44,7 @@ open class SingleTypeAdapter<T>(context: Context, private val layoutRes: Int, li
     }
 
 
-    override fun onCreateViewHolder(parent: ViewGroup?, viewType: Int) =
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int) =
             BindingViewHolder(DataBindingUtil.inflate<ViewDataBinding>(mLayoutInflater, layoutRes, parent, false))
 
 

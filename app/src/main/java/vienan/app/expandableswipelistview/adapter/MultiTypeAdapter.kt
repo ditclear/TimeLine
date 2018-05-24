@@ -56,7 +56,7 @@ class MultiTypeAdapter(context: Context, list: ObservableArrayList<Any>, val mul
         })
     }
 
-    override fun onCreateViewHolder(parent: ViewGroup?, viewType: Int): BindingViewHolder<ViewDataBinding> {
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): BindingViewHolder<ViewDataBinding> {
         return BindingViewHolder(
                 DataBindingUtil.inflate<ViewDataBinding>(mLayoutInflater, getLayoutRes(viewType), parent, false))
     }
