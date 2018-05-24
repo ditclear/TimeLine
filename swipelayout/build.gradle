@@ -31,7 +31,7 @@ publish {
     userOrg = 'vienan'
     groupId = 'com.ditclear'
     artifactId = 'swipedraglayout'
-    publishVersion = '1.0.0'
+    publishVersion = '1.1.0'
     desc = 'a swipeable layout with overScroll effect'
     website = 'https://github.com/ditclear/TimeLine'
 }
