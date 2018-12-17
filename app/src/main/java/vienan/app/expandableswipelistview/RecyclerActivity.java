@@ -5,6 +5,7 @@ import android.databinding.ObservableArrayList;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
@@ -32,7 +33,7 @@ import vienan.app.expandableswipelistview.model.LineItem;
 
 public class RecyclerActivity extends AppCompatActivity
         implements BindingViewAdapter.ItemDecorator,
-        BindingViewAdapter.ItemClickPresenter<LineItem>{
+        BindingViewAdapter.ItemClickPresenter<LineItem>, SwipeRefreshLayout.OnRefreshListener {
 
 
     RecyclerActivityBinding mBinding;
@@ -55,6 +56,8 @@ public class RecyclerActivity extends AppCompatActivity
         adapter.setItemPresenter(this);
         mBinding.recyclerView.setAdapter(adapter);
         mDatas.addAll(fakeData());
+
+        mBinding.refreshLayout.setOnRefreshListener(this);
     }
 
     /**
@@ -131,5 +134,15 @@ public class RecyclerActivity extends AppCompatActivity
                 break;
 
         }
+    }
+
+    @Override
+    public void onRefresh() {
+        mBinding.refreshLayout.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                mBinding.refreshLayout.setRefreshing(false);
+            }
+        },2000);
     }
 }

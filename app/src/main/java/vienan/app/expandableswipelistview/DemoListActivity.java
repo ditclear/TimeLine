@@ -16,6 +16,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.ditclear.swipelayout.SwipeDragLayout;
+import com.yalantis.pulltomakesoup.PullToRefreshView;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -28,7 +29,7 @@ import vienan.app.expandableswipelistview.databinding.ListActivityBinding;
  * Created by ditclear on 2018/1/5.
  */
 
-public class DemoListActivity extends AppCompatActivity {
+public class DemoListActivity extends AppCompatActivity implements PullToRefreshView.OnRefreshListener {
 
     ListActivityBinding mBinding;
 
@@ -38,6 +39,7 @@ public class DemoListActivity extends AppCompatActivity {
         mBinding = DataBindingUtil.setContentView(this, R.layout.list_activity);
         getSupportActionBar().setTitle("ListView");
         final List<String> mList = fakeData();
+        mBinding.refreshLayout.setOnRefreshListener(this);
         mBinding.list.setAdapter(
                 new ArrayAdapter<String>(this, R.layout.child_status_item, R.id.tv_title,
                         mList) {
@@ -129,6 +131,16 @@ public class DemoListActivity extends AppCompatActivity {
             items.add(lineItem);
         }
         return items;
+    }
+
+    @Override
+    public void onRefresh() {
+        mBinding.refreshLayout.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                mBinding.refreshLayout.setRefreshing(false);
+            }
+        },2000);
     }
 
     static class MyViewHolder {
